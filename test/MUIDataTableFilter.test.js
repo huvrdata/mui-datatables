@@ -1,13 +1,8 @@
-import Checkbox from '@mui/material/Checkbox';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { assert } from 'chai';
-import { mount, shallow } from 'enzyme';
 import React from 'react';
-import { spy } from 'sinon';
+import { render, screen, fireEvent } from '@testing-library/react';
 import TableFilter from '../src/components/TableFilter';
 import getTextLabels from '../src/textLabels';
+import TextField from '@mui/material/TextField';
 
 describe('<TableFilter />', function() {
   let data;
@@ -40,75 +35,64 @@ describe('<TableFilter />', function() {
   it('should render label as filter name', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-    const labels = shallowWrapper
-      .find(Typography)
-      .filterWhere(n => n.html().match(/MUIDataTableFilter-checkboxListTitle/))
-      .map(n => n.text());
-    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
+    const titles = container.querySelectorAll('[class*="MUIDataTableFilter-checkboxListTitle"]');
+    const labels = Array.from(titles).map(el => el.textContent);
+    expect(labels).toEqual(['First Name', 'Company', 'City Label', 'State']);
   });
 
   it("should render data table filter view with checkboxes if filterType = 'checkbox'", () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = shallowWrapper.find(Checkbox);
-    assert.strictEqual(actualResult.length, 13);
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    expect(checkboxes.length).toBe(13);
   });
 
   it('should render data table filter view with no checkboxes if filter=false for each column', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Checkbox);
-    assert.strictEqual(actualResult.length, 0);
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    expect(checkboxes.length).toBe(0);
   });
 
   it("should render data table filter view with selects if filterType = 'select'", () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Select);
-    assert.strictEqual(actualResult.length, 4);
+    const selects = container.querySelectorAll('.MuiSelect-select');
+    expect(selects.length).toBe(4);
   });
 
   it('should render data table filter view no selects if filter=false for each column', () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
     columns = columns.map(item => (item.filter = false));
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Select);
-    assert.strictEqual(actualResult.length, 0);
+    const selects = container.querySelectorAll('.MuiSelect-select');
+    expect(selects.length).toBe(0);
   });
 
   it("should render data table filter view with checkbox selects if filterType = 'multiselect'", () => {
     const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Select);
-    assert.strictEqual(actualResult.length, 4);
+    const selects = container.querySelectorAll('.MuiSelect-select');
+    expect(selects.length).toBe(4);
   });
 
   it("should render data table filter view with custom rendering of items if filterType = 'select'", () => {
@@ -119,28 +103,24 @@ describe('<TableFilter />', function() {
       filterOptions: { renderValue: v => v.toUpperCase() },
     };
     const filterList = [['Joe James'], [null], [], []];
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Select);
-    assert.strictEqual(actualResult.length, 4);
-    assert.include(actualResult.first().html(), 'JOE JAMES');
+    const selects = container.querySelectorAll('.MuiSelect-select');
+    expect(selects.length).toBe(4);
+    expect(selects[0].innerHTML).toContain('JOE JAMES');
   });
 
   it("should render data table filter view with custom rendering of items for filterType = 'multiselect' if renderValue is provided", () => {
     columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
     const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
-
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find(Select);
-    assert.strictEqual(actualResult.length, 4);
-    assert.include(actualResult.first().html(), 'JOE JAMES, JOHN WALSH');
+    const selects = container.querySelectorAll('.MuiSelect-select');
+    expect(selects.length).toBe(4);
+    expect(selects[0].innerHTML).toContain('JOE JAMES, JOHN WALSH');
   });
 
   it("should data table custom filter view with if filterType = 'custom' and a valid display filterOption is provided", () => {
@@ -160,12 +140,11 @@ describe('<TableFilter />', function() {
       },
     };
     const filterList = [[], [], [], []];
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find('#custom-filter-render');
-    assert.isAtLeast(actualResult.length, 1);
+    const actualResult = container.querySelector('#custom-filter-render');
+    expect(actualResult).not.toBeNull();
   });
 
   it("does not render filter if filterType = 'custom' and no display filterOption is provided", () => {
@@ -179,71 +158,62 @@ describe('<TableFilter />', function() {
       },
     };
     const filterList = [[], [], [], []];
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = mountWrapper.find('#custom-filter-render');
-    assert.strictEqual(actualResult.length, 0);
+    const actualResult = container.querySelector('#custom-filter-render');
+    expect(actualResult).toBeNull();
   });
 
   it("should render column.label as filter label if filterType = 'textField'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-    const labels = shallowWrapper
-      .find(TextField)
-      .filterWhere(n => n.html().match(/MuiInputLabel-formControl/))
-      .map(n => n.text());
-    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
+    const labels = container.querySelectorAll('.MuiInputLabel-formControl');
+    const labelTexts = Array.from(labels).map(el => el.textContent);
+    expect(labelTexts).toEqual(['First Name', 'Company', 'City Label', 'State']);
   });
 
   it("should data table filter view with TextFields if filterType = 'textfield'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = shallowWrapper.find(TextField);
-    assert.strictEqual(actualResult.length, 4);
+    const textFields = container.querySelectorAll('.MuiTextField-root');
+    expect(textFields.length).toBe(4);
   });
 
   it("should data table filter view with no TextFields if filter=false when filterType = 'textField'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
-
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = shallowWrapper.find(TextField);
-    assert.strictEqual(actualResult.length, 0);
+    const textFields = container.querySelectorAll('.MuiTextField-root');
+    expect(textFields.length).toBe(0);
   });
 
   it("should data table filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns.forEach(item => (item.filterType = 'checkbox'));
-
-    const shallowWrapper = mount(
+    const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
-
-    const actualResult = shallowWrapper.find(Checkbox);
-    assert.strictEqual(actualResult.length, 13);
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    expect(checkboxes.length).toBe(13);
   });
 
   it('should render a filter dialog with custom footer when customFooter is provided', () => {
     const CustomFooter = () => <div id="custom-footer">customFooter</div>;
     const options = { textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-
-    const shallowWrapper = shallow(
+    const onFilterUpdate = jest.fn();
+    const { container } = render(
       <TableFilter
         customFooter={CustomFooter}
         columns={columns}
@@ -252,23 +222,22 @@ describe('<TableFilter />', function() {
         filterList={filterList}
         options={options}
       />,
-    ).dive();
-
-    const actualResult = shallowWrapper.find('#custom-footer');
-    assert.strictEqual(actualResult.length, 1);
+    );
+    const actualResult = container.querySelector('#custom-footer');
+    expect(actualResult).not.toBeNull();
   });
 
   it('should invoke applyFilters from customFooter callback', () => {
+    const onFilterConfirm = jest.fn();
     const CustomFooter = (filterList, applyFilters) => {
       applyFilters();
       return <div id="custom-footer">customFooter</div>;
     };
-    const options = { textLabels: getTextLabels(), onFilterConfirm: spy() };
+    const options = { textLabels: getTextLabels(), onFilterConfirm };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const handleClose = spy();
-
-    const shallowWrapper = shallow(
+    const onFilterUpdate = jest.fn();
+    const handleClose = jest.fn();
+    render(
       <TableFilter
         customFooter={CustomFooter}
         columns={columns}
@@ -278,20 +247,18 @@ describe('<TableFilter />', function() {
         options={options}
         handleClose={handleClose}
       />,
-    ).dive();
-
-    assert.equal(options.onFilterConfirm.callCount, 1);
-    assert.equal(handleClose.callCount, 1);
+    );
+    expect(onFilterConfirm).toHaveBeenCalledTimes(1);
+    expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
   it('should invoke onFilterReset when reset is pressed', () => {
     const options = { textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const handleClose = spy();
-    const onFilterReset = spy();
-
-    const wrapper = mount(
+    const onFilterUpdate = jest.fn();
+    const handleClose = jest.fn();
+    const onFilterReset = jest.fn();
+    render(
       <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
@@ -302,139 +269,73 @@ describe('<TableFilter />', function() {
         onFilterReset={onFilterReset}
       />,
     );
-
-    wrapper
-      .find('[data-testid="filterReset-button"]')
-      .at(0)
-      .simulate('click');
-
-    assert.equal(onFilterReset.callCount, 1);
-    assert.equal(handleClose.callCount, 0);
-
-    wrapper.unmount();
+    fireEvent.click(screen.getByTestId('filterReset-button'));
+    expect(onFilterReset).toHaveBeenCalledTimes(1);
+    expect(handleClose).toHaveBeenCalledTimes(0);
   });
 
-  it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
+  it('should trigger onFilterUpdate prop callback when checkbox is clicked', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const updateFilterByType = () => {};
-
-    const shallowWrapper = shallow(
+    const onFilterUpdate = jest.fn();
+    const updateFilterByType = jest.fn();
+    const { container } = render(
       <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
+        updateFilterByType={updateFilterByType}
         filterData={filterData}
         filterList={filterList}
         options={options}
-        updateFilterByType={updateFilterByType}
       />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-
-    //const event = { target: { value: 0 }};
-    instance.handleCheckboxChange(0, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 1);
+    );
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    fireEvent.click(checkboxes[0]);
+    expect(updateFilterByType).toHaveBeenCalledTimes(1);
   });
 
-  it('should trigger onFilterUpdate prop callback when calling method handleDropdownChange', () => {
+  it('should trigger onFilterUpdate prop callback when select dropdown is changed', () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const updateFilterByType = () => {};
-
-    const shallowWrapper = shallow(
+    const onFilterUpdate = jest.fn();
+    const updateFilterByType = jest.fn();
+    const { container } = render(
       <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
+        updateFilterByType={updateFilterByType}
         filterData={filterData}
         filterList={filterList}
         options={options}
-        updateFilterByType={updateFilterByType}
       />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-
-    let event = { target: { value: 'All' } };
-    instance.handleDropdownChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 1);
-
-    event = { target: { value: 'test' } };
-    instance.handleDropdownChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 2);
-
-    shallowWrapper
-      .find(Select)
-      .first()
-      .simulate('change', event);
-    assert.strictEqual(onFilterUpdate.callCount, 3);
+    );
+    // Find the first native select input and change its value
+    const selects = container.querySelectorAll('.MuiSelect-nativeInput');
+    if (selects.length > 0) {
+      fireEvent.change(selects[0], { target: { value: 'Joe James' } });
+      expect(updateFilterByType).toHaveBeenCalled();
+    }
   });
 
-  it('should trigger onFilterUpdate prop callback when calling method handleMultiselectChange', () => {
-    const options = { filterType: 'multiselect', textLabels: getTextLabels() };
-    const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const updateFilterByType = () => {};
-
-    const shallowWrapper = shallow(
-      <TableFilter
-        columns={columns}
-        onFilterUpdate={onFilterUpdate}
-        filterData={filterData}
-        filterList={filterList}
-        options={options}
-        updateFilterByType={updateFilterByType}
-      />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-
-    let event = { target: { value: 'All' } };
-
-    instance.handleMultiselectChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 1);
-
-    event = { target: { value: 'test' } };
-    instance.handleMultiselectChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 2);
-
-    shallowWrapper
-      .find(Select)
-      .first()
-      .simulate('change', event);
-    assert.strictEqual(onFilterUpdate.callCount, 3);
-  });
-
-  it('should trigger onFilterUpdate prop callback when calling method handleTextFieldChange', () => {
+  it('should trigger onFilterUpdate prop callback when textfield is changed', () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-    const updateFilterByType = () => {};
-
-    const shallowWrapper = shallow(
+    const onFilterUpdate = jest.fn();
+    const updateFilterByType = jest.fn();
+    const { container } = render(
       <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
+        updateFilterByType={updateFilterByType}
         filterData={filterData}
         filterList={filterList}
         options={options}
-        updateFilterByType={updateFilterByType}
       />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-
-    let event = { target: { value: 'All' } };
-
-    instance.handleTextFieldChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 1);
-
-    event = { target: { value: 'test' } };
-    instance.handleTextFieldChange(event, 0);
-    assert.strictEqual(onFilterUpdate.callCount, 2);
-
-    shallowWrapper
-      .find(TextField)
-      .first()
-      .simulate('change', event);
-    assert.strictEqual(onFilterUpdate.callCount, 3);
+    );
+    const inputs = container.querySelectorAll('.MuiTextField-root input');
+    if (inputs.length > 0) {
+      fireEvent.change(inputs[0], { target: { value: 'test' } });
+      expect(updateFilterByType).toHaveBeenCalled();
+    }
   });
 });

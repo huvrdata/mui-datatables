@@ -1,15 +1,13 @@
 import { getPageValue, buildCSV, createCSVDownload, escapeDangerousCSVCharacters } from '../src/utils';
-import { spy } from 'sinon';
-import { assert } from 'chai';
 
 describe('utils.js', () => {
   describe('escapeDangerousCSVCharacters', () => {
     it('properly escapes the first character in a string if it can be used for injection', () => {
-      assert.strictEqual(escapeDangerousCSVCharacters('+SUM(1+1)'), "'+SUM(1+1)");
-      assert.strictEqual(escapeDangerousCSVCharacters('-SUM(1+1)'), "'-SUM(1+1)");
-      assert.strictEqual(escapeDangerousCSVCharacters('=SUM(1+1)'), "'=SUM(1+1)");
-      assert.strictEqual(escapeDangerousCSVCharacters('@SUM(1+1)'), "'@SUM(1+1)");
-      assert.equal(escapeDangerousCSVCharacters(123), 123);
+      expect(escapeDangerousCSVCharacters('+SUM(1+1)')).toBe("'+SUM(1+1)");
+      expect(escapeDangerousCSVCharacters('-SUM(1+1)')).toBe("'-SUM(1+1)");
+      expect(escapeDangerousCSVCharacters('=SUM(1+1)')).toBe("'=SUM(1+1)");
+      expect(escapeDangerousCSVCharacters('@SUM(1+1)')).toBe("'@SUM(1+1)");
+      expect(escapeDangerousCSVCharacters(123)).toBe(123);
     });
   });
 
@@ -20,7 +18,7 @@ describe('utils.js', () => {
       const page = 5;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 2);
+      expect(actualResult).toBe(2);
     });
 
     it('returns the highest in bounds page value when page is in bounds and count is greater than rowsPerPage', () => {
@@ -29,7 +27,7 @@ describe('utils.js', () => {
       const page = 1;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 1);
+      expect(actualResult).toBe(1);
     });
 
     it('returns the highest in bounds page value when page is out of bounds and count is less than rowsPerPage', () => {
@@ -38,7 +36,7 @@ describe('utils.js', () => {
       const page = 1;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 0);
+      expect(actualResult).toBe(0);
     });
 
     it('returns the highest in bounds page value when page is in bounds and count is less than rowsPerPage', () => {
@@ -47,7 +45,7 @@ describe('utils.js', () => {
       const page = 0;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 0);
+      expect(actualResult).toBe(0);
     });
 
     it('returns the highest in bounds page value when page is out of bounds and count is equal to rowsPerPage', () => {
@@ -56,7 +54,7 @@ describe('utils.js', () => {
       const page = 1;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 0);
+      expect(actualResult).toBe(0);
     });
 
     it('returns the highest in bounds page value when page is in bounds and count is equal to rowsPerPage', () => {
@@ -65,7 +63,7 @@ describe('utils.js', () => {
       const page = 0;
 
       const actualResult = getPageValue(count, rowsPerPage, page);
-      assert.strictEqual(actualResult, 0);
+      expect(actualResult).toBe(0);
     });
   });
 
@@ -91,14 +89,14 @@ describe('utils.js', () => {
       const data = [{ data: ['anton', 'abraham'] }, { data: ['berta', 'buchel'] }];
       const csv = buildCSV(columns, data, options);
 
-      assert.strictEqual(csv, '"firstname";"lastname"\r\n' + '"anton";"abraham"\r\n' + '"berta";"buchel"');
+      expect(csv).toBe('"firstname";"lastname"\r\n' + '"anton";"abraham"\r\n' + '"berta";"buchel"');
     });
 
     it('returns an empty csv with header when given an empty dataset', () => {
       const data = [];
       const csv = buildCSV(columns, data, options);
 
-      assert.strictEqual(csv, '"firstname";"lastname"');
+      expect(csv).toBe('"firstname";"lastname"');
     });
   });
 
@@ -122,11 +120,11 @@ describe('utils.js', () => {
         },
         onDownload: () => false,
       };
-      const downloadCSV = spy();
+      const downloadCSV = jest.fn();
 
       createCSVDownload(columns, data, options, downloadCSV);
 
-      assert.strictEqual(downloadCSV.callCount, 0);
+      expect(downloadCSV).toHaveBeenCalledTimes(0);
     });
 
     it('calls download function if download callback returns truthy', () => {
@@ -136,11 +134,11 @@ describe('utils.js', () => {
         },
         onDownload: () => true,
       };
-      const downloadCSV = spy();
+      const downloadCSV = jest.fn();
 
       createCSVDownload(columns, data, options, downloadCSV);
 
-      assert.strictEqual(downloadCSV.callCount, 1);
+      expect(downloadCSV).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,17 +1,14 @@
 import React from 'react';
-import { spy, stub } from 'sinon';
-import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
 import { getColModel, reorderColumns, handleHover } from '../src/hooks/useColumnDrop';
 
 describe('useColumnDrop', function() {
-  before(() => {});
+  beforeAll(() => {});
 
   it('should reorder columns when reorderColumns is called', () => {
     let prevColumnOrder = [1, 2, 3, 4];
     let newOrder = reorderColumns(prevColumnOrder, 1, 4);
 
-    expect(newOrder).to.eql([2, 3, 4, 1]);
+    expect(newOrder).toEqual([2, 3, 4, 1]);
   });
 
   it('should build a column model object when getColModel is called', () => {
@@ -22,21 +19,18 @@ describe('useColumnDrop', function() {
     let headCellRefs = {
       0: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: offsetParent,
+        offsetWidth: 0,
       },
       1: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: null,
+        offsetWidth: 0,
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: null,
+        offsetWidth: 0,
       },
     };
     let columnOrder = [0, 1];
@@ -51,10 +45,10 @@ describe('useColumnDrop', function() {
 
     let newModel = getColModel(headCellRefs, columnOrder, columns);
 
-    expect(newModel.length).to.equal(3);
-    expect(newModel[0].left).to.equal(10);
-    expect(newModel[0].ref.offsetParent).to.equal(offsetParent);
-    expect(newModel[1].columnIndex).to.equal(0);
+    expect(newModel.length).toBe(3);
+    expect(newModel[0].left).toBe(10);
+    expect(newModel[0].ref.offsetParent).toBe(offsetParent);
+    expect(newModel[1].columnIndex).toBe(0);
   });
 
   it('should build a column model object when getColModel is called and no select cell exists', () => {
@@ -62,15 +56,13 @@ describe('useColumnDrop', function() {
       0: null,
       1: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: null,
+        offsetWidth: 0,
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: null,
+        offsetWidth: 0,
       },
     };
     let columnOrder = [0, 1];
@@ -85,9 +77,9 @@ describe('useColumnDrop', function() {
 
     let newModel = getColModel(headCellRefs, columnOrder, columns);
 
-    expect(newModel.length).to.equal(2);
-    expect(newModel[0].left).to.equal(0);
-    expect(newModel[1].columnIndex).to.equal(1);
+    expect(newModel.length).toBe(2);
+    expect(newModel[0].left).toBe(0);
+    expect(newModel[1].columnIndex).toBe(1);
   });
 
   it('should set columnShift on timers when handleHover is called', () => {
@@ -98,23 +90,20 @@ describe('useColumnDrop', function() {
     let headCellRefs = {
       0: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 0,
         offsetParent: offsetParent,
+        offsetWidth: 0,
         style: {},
       },
       1: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 10,
         offsetParent: null,
+        offsetWidth: 10,
         style: {},
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0,
-        offsetWidth: 10,
         offsetParent: null,
+        offsetWidth: 10,
         style: {},
       },
     };
@@ -148,7 +137,7 @@ describe('useColumnDrop', function() {
       },
       index: 0,
       headCellRefs,
-      updateColumnOrder: spy(),
+      updateColumnOrder: jest.fn(),
       columnOrder: [0, 1],
       transitionTime: 0,
       tableRef: {
@@ -163,6 +152,6 @@ describe('useColumnDrop', function() {
       columns,
     });
 
-    expect(timers.columnShift).to.not.equal(null);
+    expect(timers.columnShift).not.toBe(null);
   });
 });

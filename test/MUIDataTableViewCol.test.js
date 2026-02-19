@@ -1,17 +1,13 @@
 import React from 'react';
-import { spy, stub } from 'sinon';
-import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
-import Checkbox from '@mui/material/Checkbox';
+import { render, screen, fireEvent } from './test-utils';
 import TableViewCol from '../src/components/TableViewCol';
 import getTextLabels from '../src/textLabels';
-import { FormControlLabel } from '@mui/material';
 
 describe('<TableViewCol />', function() {
   let columns;
   let options;
 
-  before(() => {
+  beforeAll(() => {
     columns = [
       { name: 'a', label: 'A', display: 'true' },
       { name: 'b', label: 'B', display: 'true' },
@@ -24,29 +20,29 @@ describe('<TableViewCol />', function() {
   });
 
   it('should render view columns', () => {
-    const mountWrapper = mount(<TableViewCol columns={columns} options={options} />);
+    render(<TableViewCol columns={columns} options={options} />);
 
-    const actualResult = mountWrapper.find(Checkbox);
-    assert.strictEqual(actualResult.length, 4);
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes).toHaveLength(4);
   });
 
   it('should labels as view column names when present', () => {
-    const mountWrapper = mount(<TableViewCol columns={columns} options={options} />);
-    const labels = mountWrapper.find(FormControlLabel).map(n => n.text());
-    assert.deepEqual(labels, ['A', 'B', 'C', 'D']);
+    render(<TableViewCol columns={columns} options={options} />);
+
+    expect(screen.getByText('A')).toBeInTheDocument();
+    expect(screen.getByText('B')).toBeInTheDocument();
+    expect(screen.getByText('C')).toBeInTheDocument();
+    expect(screen.getByText('D')).toBeInTheDocument();
   });
 
   it('should trigger onColumnUpdate prop callback when calling method handleColChange', () => {
-    const onColumnUpdate = spy();
+    const onColumnUpdate = jest.fn();
 
-    const wrapper = mount(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
+    render(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
 
-    wrapper
-      .find('input[type="checkbox"]')
-      .at(0)
-      .simulate('change', { target: { checked: false, value: false } });
-    wrapper.unmount();
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
 
-    assert.strictEqual(onColumnUpdate.callCount, 1);
+    expect(onColumnUpdate).toHaveBeenCalledTimes(1);
   });
 });

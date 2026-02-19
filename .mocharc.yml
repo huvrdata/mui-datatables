@@ -1,8 +1,0 @@
-require:
-  - "@babel/register"
-  - "./test/setup-mocha-env.js"
-extension:
-  - js
-  - jsx
-spec: "test/**/*.test.js"
-timeout: 10000

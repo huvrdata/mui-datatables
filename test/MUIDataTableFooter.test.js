@@ -1,17 +1,15 @@
 import React from 'react';
-import { spy } from 'sinon';
-import { mount } from 'enzyme';
-import { assert } from 'chai';
+import { render, screen } from './test-utils';
 import MuiTableFooter from '@mui/material/TableFooter';
 import getTextLabels from '../src/textLabels';
 import TableFooter from '../src/components/TableFooter';
-import JumpToPage from '../src/components/JumpToPage';
 
 describe('<TableFooter />', function() {
   let options;
-  const changeRowsPerPage = spy();
-  const changePage = spy();
-  before(() => {
+  const changeRowsPerPage = jest.fn();
+  const changePage = jest.fn();
+
+  beforeAll(() => {
     options = {
       rowsPerPageOptions: [5, 10, 15],
       textLabels: getTextLabels(),
@@ -19,7 +17,7 @@ describe('<TableFooter />', function() {
   });
 
   it('should render a table footer', () => {
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFooter
         options={options}
         rowCount={100}
@@ -30,8 +28,10 @@ describe('<TableFooter />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(MuiTableFooter);
-    assert.strictEqual(actualResult.length, 1);
+    // TableFooter renders a MuiTable containing MuiTableFooter with pagination
+    // Verify that pagination controls are present (indicating the footer rendered)
+    expect(screen.getByTestId('pagination-back')).toBeInTheDocument();
+    expect(screen.getByTestId('pagination-next')).toBeInTheDocument();
   });
 
   it('should render a table footer with customFooter', () => {
@@ -40,19 +40,16 @@ describe('<TableFooter />', function() {
       textLabels: getTextLabels(),
       customFooter: (rowCount, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {
         return (
-          <MuiTableFooter
-            changePage={changePage}
-            changeRowsPerPage={changeRowsPerPage}
-            page={page}
-            rowCount={rowCount}
-            rowsPerPage={rowsPerPage}
-            labelRowsPerPage={textLabels.rowsPerPage}
-          />
+          <MuiTableFooter data-testid="custom-footer">
+            <tr>
+              <td>{`Rows: ${rowCount}`}</td>
+            </tr>
+          </MuiTableFooter>
         );
       },
     };
 
-    const mountWrapper = mount(
+    render(
       <TableFooter
         options={customOptions}
         rowCount={100}
@@ -63,8 +60,7 @@ describe('<TableFooter />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(MuiTableFooter);
-    assert.strictEqual(actualResult.length, 1);
+    expect(screen.getByTestId('custom-footer')).toBeInTheDocument();
   });
 
   it('should not render a table footer', () => {
@@ -74,7 +70,7 @@ describe('<TableFooter />', function() {
       pagination: false,
     };
 
-    const mountWrapper = mount(
+    const { container } = render(
       <TableFooter
         options={nonPageOption}
         rowCount={100}
@@ -85,20 +81,20 @@ describe('<TableFooter />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(MuiTableFooter);
-    assert.strictEqual(actualResult.length, 0);
+    // When pagination is false and no customFooter, the component returns null
+    expect(container.innerHTML).toBe('');
   });
 
   it('should render a JumpToPage component', () => {
-    const options = {
+    const jumpToPageOptions = {
       rowsPerPageOptions: [5, 10, 15],
       textLabels: getTextLabels(),
       jumpToPage: true,
     };
 
-    const mountWrapper = mount(
+    render(
       <TableFooter
-        options={options}
+        options={jumpToPageOptions}
         rowCount={100}
         page={1}
         rowsPerPage={10}
@@ -107,7 +103,7 @@ describe('<TableFooter />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(JumpToPage);
-    assert.strictEqual(actualResult.length, 1);
+    // JumpToPage renders the "Jump to Page:" text label
+    expect(screen.getByText('Jump to Page:')).toBeInTheDocument();
   });
 });

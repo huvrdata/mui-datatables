@@ -1,8 +1,7 @@
-import Enzyme from 'enzyme';
-import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
+const Enzyme = require('enzyme');
+const Adapter = require('@wojtekmaj/enzyme-adapter-react-17');
 
-/* required when running >= 16.0 */
+/* required when running >= 17.0 */
 Enzyme.configure({ adapter: new Adapter() });
 
 function setupDom() {
@@ -15,10 +14,14 @@ function setupDom() {
   global.document = window.document;
   global.Node = Node;
 
-  global.navigator = {
-    userAgent: 'node.js',
-    appVersion: '',
-  };
+  Object.defineProperty(global, 'navigator', {
+    value: {
+      userAgent: 'node.js',
+      appVersion: '',
+    },
+    writable: true,
+    configurable: true,
+  });
 
   function copyProps(src, target) {
     const props = Object.getOwnPropertyNames(src)

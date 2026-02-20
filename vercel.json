@@ -1,7 +1,14 @@
 {
   "version": 2,
-  "buildCommand": "npm run docs:build",
-  "outputDirectory": "docs/out",
-  "framework": "nextjs",
-  "installCommand": "npm install"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "docs/export"
+      }
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run docs:build && npm run docs:export"
 }

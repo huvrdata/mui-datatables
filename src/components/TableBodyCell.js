@@ -70,24 +70,6 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
     width: 'calc(100%)',
     boxSizing: 'border-box',
   },
-  cellStackedSmall: {
-    [theme.breakpoints.down('md')]: {
-      width: '50%',
-      boxSizing: 'border-box',
-    },
-  },
-  responsiveStackedSmall: {
-    [theme.breakpoints.down('md')]: {
-      width: '50%',
-      boxSizing: 'border-box',
-    },
-  },
-  responsiveStackedSmallParent: {
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      boxSizing: 'border-box',
-    },
-  },
 }));
 
 function TableBodyCell(props) {
@@ -128,15 +110,8 @@ function TableBodyCell(props) {
           [classes.root]: true,
           [classes.cellHide]: true,
           [classes.stackedHeader]: true,
-          [classes.stackedCommon]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
+          [classes.stackedCommon]: options.responsive === 'vertical',
           [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
-          [classes.cellStackedSmall]:
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
           [classes.simpleHeader]: options.responsive === 'simple',
           'datatables-noprint': !print,
         },
@@ -149,15 +124,8 @@ function TableBodyCell(props) {
       className={clsx(
         {
           [classes.root]: true,
-          [classes.stackedCommon]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
+          [classes.stackedCommon]: options.responsive === 'vertical',
           [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
-          [classes.responsiveStackedSmall]:
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
           [classes.simpleCell]: options.responsive === 'simple',
           'datatables-noprint': !print,
         },
@@ -168,9 +136,7 @@ function TableBodyCell(props) {
   ];
 
   var innerCells;
-  if (
-    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !== -1
-  ) {
+  if (options.responsive === 'standard') {
     innerCells = cells.slice(1, 2);
   } else {
     innerCells = cells;
@@ -184,16 +150,8 @@ function TableBodyCell(props) {
       className={clsx(
         {
           [classes.root]: true,
-          [classes.stackedParent]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
+          [classes.stackedParent]: options.responsive === 'vertical',
           [classes.stackedParentAlways]: options.responsive === 'verticalAlways',
-          [classes.responsiveStackedSmallParent]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
           [classes.simpleCell]: options.responsive === 'simple',
           'datatables-noprint': !print,
         },

@@ -62,9 +62,7 @@ function Example() {
           <MenuItem value={'standard'}>standard</MenuItem>
           <MenuItem value={'simple'}>simple</MenuItem>
 
-          <MenuItem value={'scroll'}>scroll (deprecated)</MenuItem>
-          <MenuItem value={'scrollMaxHeight'}>scrollMaxHeight (deprecated)</MenuItem>
-          <MenuItem value={'stacked'}>stacked (deprecated)</MenuItem>
+
         </Select>
       </FormControl>
       <FormControl>

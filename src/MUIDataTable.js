@@ -49,29 +49,7 @@ const defaultTableStyles = theme => ({
     },
   },
 
-  // deprecated, but continuing support through v3.x
-  responsiveScroll: {
-    overflow: 'auto',
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveScrollMaxHeight: {
-    overflow: 'auto',
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveScrollFullHeight: {
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveStacked: {
-    overflow: 'auto',
-    [theme.breakpoints.down('md')]: {
-      overflow: 'hidden',
-    },
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveStackedFullWidth: {},
+
   caption: {
     position: 'absolute',
     left: '-3000px',
@@ -446,28 +424,7 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (['standard', 'vertical', 'verticalAlways', 'simple'].indexOf(this.options.responsive) === -1) {
-      if (
-        [
-          'scrollMaxHeight',
-          'scrollFullHeight',
-          'stacked',
-          'stackedFullWidth',
-          'scrollFullHeightFullWidth',
-          'scroll',
-        ].indexOf(this.options.responsive) !== -1
-      ) {
-        this.warnDep(
-          this.options.responsive +
-            ' has been deprecated, but will still work in version 3.x. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
-        );
-      } else {
-        this.warnInfo(
-          this.options.responsive +
-            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
-        );
-      }
-    }
+
     if (this.options.onRowsSelect) {
       this.warnDep(
         'onRowsSelect has been renamed onRowSelectionChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
@@ -1877,37 +1834,6 @@ class MUIDataTable extends React.Component {
     let responsiveClass;
 
     switch (responsiveOption) {
-      // deprecated
-      case 'scroll':
-        responsiveClass = classes.responsiveScroll;
-        maxHeight = '499px';
-        break;
-      // deprecated
-      case 'scrollMaxHeight':
-        responsiveClass = classes.responsiveScrollMaxHeight;
-        maxHeight = '499px';
-        break;
-      // deprecated
-      case 'scrollFullHeight':
-        responsiveClass = classes.responsiveScrollFullHeight;
-        maxHeight = 'none';
-        break;
-      // deprecated
-      case 'scrollFullHeightFullWidth':
-        responsiveClass = classes.responsiveScrollFullHeight;
-        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
-        break;
-      // deprecated
-      case 'stacked':
-        responsiveClass = classes.responsiveStacked;
-        maxHeight = 'none';
-        break;
-      // deprecated
-      case 'stackedFullWidth':
-        responsiveClass = classes.responsiveStackedFullWidth;
-        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
-        maxHeight = 'none';
-        break;
 
       default:
         responsiveClass = classes.responsiveBase;

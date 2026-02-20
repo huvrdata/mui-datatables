@@ -8,10 +8,8 @@ All existing options from version 2 will still work in version 3, however, some 
 The responsive option has been updated so that it no longer controls the table height. Instead, two new options have been created to help developers control the height of the table: **tableBodyHeight** and **tableBodyMaxHeight**. The value the responsive option takes in have been changed to the following:
 
 * vertical: This mode replaces "stacked" mode. Long strings of text are now correctly handled and alignment appears correct.
-* standard: This mode replaces "scrollMaxHeight" mode.
-* simple: This mode mimics the design proposed in this issue: https://github.com/gregnb/mui-datatables/issues/1188
-
-All existing inputs to the responsive field such as "scrollMaxHeight", "stacked", etc, will still work. 
+* standard: This is the default responsive mode.
+* simple: This mode mimics the design proposed in this issue: https://github.com/gregnb/mui-datatables/issues/1188 
 
 ### sortDirection deprecated in favor of sortOrder 
 The sort direction of the table is now controlled by options.sortOrder ([example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js)). Using a sortDirection value on a column's options object will still work, but it will print a deprecation notice when run in development mode.

@@ -13,7 +13,7 @@
     "docs:dev": "next docs",
     "docs:build": "cross-env NODE_ENV=production next build docs",
     "docs:export": "next export docs -o docs/export",
-    "docs:deploy": "npm run docs:build && npm run docs:export && firebase deploy",
+    "vercel-build": "npm run docs:build",
     "docs:start": "next start docs",
     "coverage": "jest --coverage",
     "format": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",

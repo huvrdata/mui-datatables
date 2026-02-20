@@ -102,7 +102,7 @@ export const defaultToolbarStyles = theme => ({
   '@media screen and (max-width: 480px)': {},
 });
 
-const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
+
 
 class TableToolbar extends React.Component {
   state = {
@@ -323,10 +323,10 @@ class TableToolbar extends React.Component {
 
     return (
       <Toolbar
-        className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
+        className={classes.root}
         role={'toolbar'}
         aria-label={'Table Toolbar'}>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
+        <div className={classes.left}>
           {showSearch === true ? (
             options.customSearchRender ? (
               options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
@@ -344,15 +344,13 @@ class TableToolbar extends React.Component {
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography
                 variant="h6"
-                className={
-                  options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText
-                }>
+                className={classes.titleText}>
                 {title}
               </Typography>
             </div>
           )}
         </div>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
+        <div className={classes.actions}>
           {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
             <Tooltip title={search} disableFocusListener>
               <IconButton

@@ -123,29 +123,28 @@ const TableHeadCell = ({
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
   };
 
-  const [{ opacity }, dragRef, preview] = useDrag({
-    item: {
-      type: 'HEADER',
+  const [{ isDragging }, dragRef, preview] = useDrag({
+    type: 'HEADER',
+    item: () => ({
       colIndex: index,
       headCellRefs: draggableHeadCellRefs,
-    },
-    begin: monitor => {
-      setTimeout(() => {
-        setHintTooltipOpen(false);
-        setSortTooltipOpen(false);
-        setDragging(true);
-      }, 0);
-      return null;
-    },
+    }),
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
     end: (item, monitor) => {
       setDragging(false);
     },
-    collect: monitor => {
-      return {
-        opacity: monitor.isDragging() ? 1 : 0,
-      };
-    },
   });
+
+  React.useEffect(() => {
+    if (isDragging) {
+      setHintTooltipOpen(false);
+      setSortTooltipOpen(false);
+      setDragging(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragging]);
 
   const [drop] = useColumnDrop({
     drop: (item, mon) => {

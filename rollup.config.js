@@ -2,12 +2,20 @@ import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import uglify from '@lopatnov/rollup-plugin-uglify';
+import pkg from './package.json';
+
+const dependencies = Object.keys(pkg.dependencies || {});
+const peerDependencies = Object.keys(pkg.peerDependencies || {});
+const external = id =>
+  dependencies.some(dep => id.startsWith(dep)) || peerDependencies.some(dep => id.startsWith(dep));
 
 export default {
   input: 'src/index.js',
+  external,
   plugins: [
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true,
     }),
     commonjs({
       include: ['node_modules/**'],

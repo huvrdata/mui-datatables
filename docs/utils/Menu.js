@@ -6,6 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
+import Link from 'next/link';
 
 const styles = theme => ({
   list: {
@@ -50,6 +51,11 @@ class Menu extends React.Component {
                 Examples
               </ListSubheader>
             }>
+            <Link href="/examples">
+              <ListItem button>
+                <ListItemText primary="All Examples" />
+              </ListItem>
+            </Link>
             {sandboxes.map(item => (
               <SandboxItem href={item.href} name={item.name} />
             ))}

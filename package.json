@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "docs:dev": "next docs",
-    "docs:build": "cross-env NODE_ENV=production next build docs",
+    "docs:build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider next build docs",
     "docs:export": "next export docs -o docs/export",
     "vercel-build": "npm run docs:build",
     "docs:start": "next start docs",
@@ -19,7 +19,7 @@
     "format": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "format:check": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --check",
     "lint": "eslint src",
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider rollup -c",
     "prepare": "npm run build"
   },
   "repository": {

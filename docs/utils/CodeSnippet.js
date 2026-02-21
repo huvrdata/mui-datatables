@@ -5,33 +5,30 @@ import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
 import Paper from '@mui/material/Paper';
-import { withStyles } from 'tss-react/mui';
+import { makeStyles } from 'tss-react/mui';
 
-const styles = theme => ({});
+const useStyles = makeStyles()(theme => ({}));
 
-class CodeSnippet extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    language: PropTypes.string,
-    text: PropTypes.string.isRequired,
-  };
+function CodeSnippet({ language, text }) {
+  const { classes } = useStyles();
+  const hightlightedCode = prism.highlight(text, prism.languages[language]);
 
-  static defaultProps = {
-    language: 'jsx',
-  };
-
-  render() {
-    const { classes, language, text } = this.props;
-    const hightlightedCode = prism.highlight(text, prism.languages[language]);
-
-    return (
-      <Paper elevation={4}>
-        <pre>
-          <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: hightlightedCode }} />
-        </pre>
-      </Paper>
-    );
-  }
+  return (
+    <Paper elevation={4}>
+      <pre>
+        <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: hightlightedCode }} />
+      </pre>
+    </Paper>
+  );
 }
 
-export default withStyles(CodeSnippet, styles);
+CodeSnippet.propTypes = {
+  language: PropTypes.string,
+  text: PropTypes.string.isRequired,
+};
+
+CodeSnippet.defaultProps = {
+  language: 'jsx',
+};
+
+export default CodeSnippet;

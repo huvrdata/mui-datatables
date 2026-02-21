@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -8,14 +8,14 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Link from 'next/link';
 
-const styles = theme => ({
+const useStyles = makeStyles()(theme => ({
   list: {
     width: 250,
   },
   listTitle: {
     fontSize: 25,
   },
-});
+}));
 
 const sandboxes = [
   { name: 'Custom Component', href: 'https://codesandbox.io/embed/xrvrzryjvp?autoresize=1&hidenavigation=1' },
@@ -38,38 +38,30 @@ SandboxItem.propTypes = {
   name: PropTypes.string,
 };
 
-class Menu extends React.Component {
-  render() {
-    const { isOpen, toggle, classes } = this.props;
-    return (
-      <Drawer open={isOpen} onClose={toggle}>
-        <div tabIndex={0} role="button" onClick={toggle} onKeyDown={toggle} className={classes.list}>
-          <List
-            component="nav"
-            subheader={
-              <ListSubheader className={classes.listTitle} component="h2">
-                Examples
-              </ListSubheader>
-            }>
-            <Link href="/examples">
-              <ListItem button>
-                <ListItemText primary="All Examples" />
-              </ListItem>
-            </Link>
-            {sandboxes.map(item => (
-              <SandboxItem href={item.href} name={item.name} />
-            ))}
-          </List>
-        </div>
-      </Drawer>
-    );
-  }
+function Menu({ isOpen, toggle }) {
+  const { classes } = useStyles();
+  return (
+    <Drawer open={isOpen} onClose={toggle}>
+      <div tabIndex={0} role="button" onClick={toggle} onKeyDown={toggle} className={classes.list}>
+        <List
+          component="nav"
+          subheader={
+            <ListSubheader className={classes.listTitle} component="h2">
+              Examples
+            </ListSubheader>
+          }>
+          {sandboxes.map(item => (
+            <SandboxItem href={item.href} name={item.name} />
+          ))}
+        </List>
+      </div>
+    </Drawer>
+  );
 }
 
 Menu.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Menu);
+export default Menu;

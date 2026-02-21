@@ -7,57 +7,55 @@ import DownloadIcon from '@mui/icons-material/CloudDownload';
 import BuildIcon from '@mui/icons-material/Build'; // eslint-disable-line import/no-unresolved
 import CodeSnippet from '../utils/CodeSnippet';
 import Layout from '../utils/layout';
-import withRoot from '../utils/withRoot';
-import { withStyles } from 'tss-react/mui';
+import { makeStyles } from 'tss-react/mui';
 
-const styles = theme => ({
+const useStyles = makeStyles()(theme => ({
   stepIcon: {
     fontSize: '30px',
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
   },
   stepWrapper: {
-    marginTop: theme.spacing.unit * 4,
+    marginTop: theme.spacing(4),
     display: 'flex',
     alignItems: 'center',
   },
   mainImage: {
     maxWidth: '100%',
   },
-});
+}));
 
-class Homepage extends React.Component {
-  render() {
-    const { classes } = this.props;
+function Homepage() {
+  const { classes } = useStyles();
 
-    return (
-      <Layout>
-        <div>
-          <p>
-            MUI-Datatables is a data tables component built on <a href="https://www.material-ui.com">Material-UI V3</a>.
-            It comes with features like filtering, view/hide columns, search, export to CSV download, printing,
-            selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
-            are several responsive modes for mobile/tablet devices.
-          </p>
-          <img
-            src="/static/mui-datatables-main.jpg"
-            className={classes.mainImage}
-            border="0"
-            alt="The look of the component"
-          />
+  return (
+    <Layout>
+      <div>
+        <p>
+          MUI-Datatables is a data tables component built on <a href="https://www.material-ui.com">Material-UI V3</a>.
+          It comes with features like filtering, view/hide columns, search, export to CSV download, printing,
+          selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
+          are several responsive modes for mobile/tablet devices.
+        </p>
+        <img
+          src="/static/mui-datatables-main.jpg"
+          className={classes.mainImage}
+          border="0"
+          alt="The look of the component"
+        />
 
-          <div className={classes.stepWrapper}>
-            <DownloadIcon className={classes.stepIcon} />
-            <Typography variant="h6">Installation</Typography>
-          </div>
-          <CodeSnippet withMargin language={'bash'} text={`npm install mui-datatables --save`} />
+        <div className={classes.stepWrapper}>
+          <DownloadIcon className={classes.stepIcon} />
+          <Typography variant="h6">Installation</Typography>
+        </div>
+        <CodeSnippet withMargin language={'bash'} text={`npm install mui-datatables --save`} />
 
-          <div className={classes.stepWrapper}>
-            <BuildIcon className={classes.stepIcon} />
-            <Typography variant="h6">Usage</Typography>
-          </div>
-          <CodeSnippet
-            language={'jsx'}
-            text={`import MUIDataTable from "mui-datatables";
+        <div className={classes.stepWrapper}>
+          <BuildIcon className={classes.stepIcon} />
+          <Typography variant="h6">Usage</Typography>
+        </div>
+        <CodeSnippet
+          language={'jsx'}
+          text={`import MUIDataTable from "mui-datatables";
 
 const columns = ["Name", "Company", "City", "State"];
 
@@ -78,11 +76,10 @@ const options = {
   columns={columns} 
   options={options} 
 />`}
-          />
-        </div>
-      </Layout>
-    );
-  }
+        />
+      </div>
+    </Layout>
+  );
 }
 
-export default withRoot(withStyles(Homepage, styles));
+export default Homepage;

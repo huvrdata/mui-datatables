@@ -27,12 +27,10 @@ module.exports = {
       {
         "targets": {
           "browsers": [
-            "ie >= 11",
-            "> 1%",
-            "iOS >= 8",
-            "Android >= 4"
+            "> 0.5%",
+            "not dead"
           ],
-          "node": "6.10"
+          "node": "18"
         },
         "useBuiltIns": "entry",
         "debug": false,
@@ -49,13 +47,10 @@ module.exports = {
   ],
   "plugins": [
     [
-      "@babel/plugin-proposal-class-properties"
+      "@babel/plugin-transform-class-properties"
     ],
     [
-      "@babel/plugin-proposal-object-rest-spread"
-    ],
-    [
-      "@babel/plugin-transform-async-to-generator"
+      "@babel/plugin-transform-object-rest-spread"
     ],
     [
       "@babel/plugin-transform-runtime",

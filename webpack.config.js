@@ -1,4 +1,6 @@
+const path = require('path');
 const webpack = require('webpack');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -11,19 +13,20 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    disableHostCheck: true,
+    allowedHosts: 'all',
     host: 'localhost',
     hot: true,
-    inline: true,
     port: 5050,
-    stats: 'errors-warnings',
+    static: {
+      directory: path.join(__dirname, '/'),
+    },
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/i,
@@ -32,8 +35,10 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
+    new EslintWebpackPlugin({
+      extensions: ['js', 'jsx'],
+      exclude: ['node_modules'],
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),

@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import TableToolbar from '../src/components/TableToolbar';
 import getTextLabels from '../src/textLabels';
 
-const CustomChip = props => {
+const CustomChip = (props) => {
   return <Chip variant="outlined" color="secondary" label={props.label} data-testid="custom-chip" />;
 };
 
@@ -41,11 +41,9 @@ const data = [
   { data: ['James Houston', 'Test Corp', 'Dallas', 'TX'], dataIndex: 3 },
 ];
 
-const testCustomIcon = iconName => {
+const testCustomIcon = (iconName) => {
   const components = { icons: { [iconName]: CustomChip } };
-  const { container } = render(
-    <TableToolbar {...{ columns, data, options, setTableAction, components }} />,
-  );
+  const { container } = render(<TableToolbar {...{ columns, data, options, setTableAction, components }} />);
 
   // All 5 icon buttons should still render
   const iconButtons = container.querySelectorAll('.MuiIconButton-root');
@@ -57,7 +55,7 @@ const testCustomIcon = iconName => {
 
   // The original default icon for the replaced icon should be gone,
   // but the other icons' test IDs should still be present
-  Object.keys(iconTestIds).forEach(icon => {
+  Object.keys(iconTestIds).forEach((icon) => {
     const elements = container.querySelectorAll(`[data-testid="${iconTestIds[icon]}"]`);
     if (icon === iconName) {
       // The replaced icon's button should still exist (button testid) but
@@ -69,7 +67,7 @@ const testCustomIcon = iconName => {
   });
 };
 
-describe('<TableToolbar /> with custom icons', function() {
+describe('<TableToolbar /> with custom icons', function () {
   it('should render a toolbar with a custom chip in place of the search icon', () => {
     testCustomIcon('SearchIcon');
   });

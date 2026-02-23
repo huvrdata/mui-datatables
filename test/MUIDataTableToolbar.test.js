@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import TableToolbar from '../src/components/TableToolbar';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableToolbar />', function() {
+describe('<TableToolbar />', function () {
   let data;
   let columns;
   let options;
@@ -54,7 +54,13 @@ describe('<TableToolbar />', function() {
   it('should render a toolbar with search text initialized if option.searchText = some_text', () => {
     const newOptions = { ...options, search: true, searchText: 'searchText' };
     render(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} searchText="searchText" />,
+      <TableToolbar
+        columns={columns}
+        data={data}
+        options={newOptions}
+        setTableAction={setTableAction}
+        searchText="searchText"
+      />,
     );
     const searchInput = screen.getByRole('textbox', { name: 'Search' });
     expect(searchInput).toBeInTheDocument();
@@ -63,9 +69,7 @@ describe('<TableToolbar />', function() {
 
   it('should render a toolbar with search if option.searchOpen = true', () => {
     const newOptions = { ...options, searchOpen: true };
-    render(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
+    render(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
 
@@ -121,9 +125,7 @@ describe('<TableToolbar />', function() {
   });
 
   it('should render a toolbar with a search when clicking search icon', () => {
-    render(
-      <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
-    );
+    render(<TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />);
     fireEvent.click(screen.getByTestId('Search-iconButton'));
     expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
@@ -152,9 +154,7 @@ describe('<TableToolbar />', function() {
 
   it('should render a toolbar with a search when searchAlwaysOpen is set to true', () => {
     const newOptions = { ...options, searchAlwaysOpen: true };
-    render(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
+    render(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
 
@@ -172,9 +172,7 @@ describe('<TableToolbar />', function() {
   it('should call onFilterDialogOpen when opening filters via toolbar', () => {
     const onFilterDialogOpen = jest.fn();
     const newOptions = { ...options, onFilterDialogOpen };
-    render(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
+    render(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     fireEvent.click(screen.getByTestId('Filter Table-iconButton'));
     expect(onFilterDialogOpen).toHaveBeenCalledTimes(1);
   });
@@ -182,9 +180,7 @@ describe('<TableToolbar />', function() {
   it('should call onFilterDialogClose when closing filters dialog', async () => {
     const onFilterDialogClose = jest.fn();
     const newOptions = { ...options, onFilterDialogClose };
-    render(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
+    render(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     // Open filter
     fireEvent.click(screen.getByTestId('Filter Table-iconButton'));
     // Close filter by clicking the Close button inside the popover

@@ -4,7 +4,7 @@ import MuiTableFooter from '@mui/material/TableFooter';
 import getTextLabels from '../src/textLabels';
 import TableFooter from '../src/components/TableFooter';
 
-describe('<TableFooter />', function() {
+describe('<TableFooter />', function () {
   let options;
   const changeRowsPerPage = jest.fn();
   const changePage = jest.fn();

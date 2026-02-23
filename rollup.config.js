@@ -1,8 +1,11 @@
+import { createRequire } from 'node:module';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
-import uglify from '@lopatnov/rollup-plugin-uglify';
-import pkg from './package.json';
+import terser from '@rollup/plugin-terser';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 const dependencies = Object.keys(pkg.dependencies || {});
 const peerDependencies = Object.keys(pkg.peerDependencies || {});
@@ -24,26 +27,20 @@ export default {
       babelHelpers: 'runtime',
       babelrc: true,
     }),
-    uglify({
-      compress: {
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-      },
-      output: {
-        comments: false,
-      },
-    }),
+    terser(),
   ],
-  output: {
-    file: 'dist/index.js',
-    format: 'cjs',
-    exports: 'named',
-    sourcemap: true,
-  },
+  output: [
+    {
+      file: 'dist/index.js',
+      format: 'cjs',
+      exports: 'named',
+      sourcemap: true,
+    },
+    {
+      file: 'dist/index.esm.js',
+      format: 'es',
+      exports: 'named',
+      sourcemap: true,
+    },
+  ],
 };

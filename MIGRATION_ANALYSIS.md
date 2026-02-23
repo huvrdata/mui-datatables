@@ -2,40 +2,56 @@
 
 ## Current State of mui-datatables (v4.3.0)
 
-This project is no longer maintained. Below is an assessment of major issues and a comparison of alternative libraries.
+This is a fork of the original [gregnb/mui-datatables](https://github.com/gregnb/mui-datatables), which is no longer maintained. This fork ([huvrdata/mui-datatables](https://github.com/huvrdata/mui-datatables)) has modernized the infrastructure, fixed critical bugs, and brought the dev toolchain up to date. The library itself is stable and in maintenance mode — no new features are planned, but the codebase is in a healthy state for continued use.
+
+Below is a summary of remaining issues, what has been resolved since the fork, and a comparison of alternative libraries for teams considering a migration.
 
 ---
 
-## Major Issues
+## Remaining Issues
 
 ### Critical
 
-1. **Broken Test Suite** — The test setup (`test/setup-mocha-env.js`) imports `enzyme-adapter-react-16`, which isn't in `devDependencies`. `@wojtekmaj/enzyme-adapter-react-17` is installed but unused. Enzyme has no React 18 adapter, yet `react@^18.2.0` is the dev dependency. Tests are effectively non-functional.
-
-2. **Duplicate `tss-react` Dependency (Packaging Bug)** — `package.json` lists `tss-react` twice with conflicting versions (`^4.1.3` and `^3.6.0`). The second entry silently overwrites the first in npm, so `^3.6.0` is what actually installs.
-
-3. **No MUI v6 / React 19 Compatibility** — Peer dependencies cap at `@mui/material ^5.11.0` and `react ^18.2.0`. MUI v6+ and React 19 are not supported, with no path forward.
-
-4. **Deprecated react-dnd API** — `react-dnd` is pinned at v11. The drag-and-drop code in `TableHeadCell.js` uses the `begin` callback in `useDrag`, which was removed in react-dnd v14+. This can cause conflicts if a consuming app uses a newer react-dnd version.
+1. **No React 19 Compatibility** — Peer dependencies allow MUI v5/v6 (`@mui/material ^5.0.0 || ^6.0.0`) but still cap React at v18 (`react ^17.0.0 || ^18.0.0`). React 19 is not supported.
 
 ### Moderate
 
-5. **Monolithic Architecture** — `MUIDataTable.js` is ~2,000 lines — a single class component handling data processing, pagination, sorting, filtering, searching, row selection, column ordering, and state persistence.
+2. **Monolithic Architecture** — `MUIDataTable.js` is ~2,000 lines — a single class component handling data processing, pagination, sorting, filtering, searching, row selection, column ordering, and state persistence.
 
-6. **Heavily Outdated Build Tooling** — Webpack 4 (current: 5), Rollup 2 (current: 4), Mocha 7 (current: 10+), Prettier 1 (current: 3). Babel targets IE 11 and Android 4, generating unnecessary polyfills and inflating bundle size. Travis CI is largely deprecated for open source.
+3. **Rollup 2** — The production build still uses Rollup 2 (current: 4). This is the last major outdated build tool remaining.
 
-7. **Unused Dependency** — `react-sortable-tree-patch-react-17` is in `dependencies` but never imported anywhere in the source code.
-
-8. **localStorage Error Handling** — Both `load.js` and `save.js` lack try/catch around `JSON.parse`/`localStorage.setItem`. These throw in private browsing mode or when storage quota is exceeded, potentially crashing the table.
-
-9. **Accumulated Deprecation Shims** — The codebase carries backward-compatibility shims for v2/v3 options (`scroll`, `fixedHeaderOptions`, `serverSideFilterList`, `onRowsSelect`, etc.), adding complexity without cleanup.
+4. **Accumulated Deprecation Shims** — The codebase still carries backward-compatibility shims for v2/v3 options (`fixedHeaderOptions`, `serverSideFilterList`, `onRowsSelect`), adding complexity without cleanup.
 
 ### Minor
 
 - 50% coverage threshold — low bar for a production library with 1,800+ GitHub stars
-- IE11-only code paths (`navigator.msSaveOrOpenBlob`) that are dead code in all modern browsers
+- IE11-only code paths (`navigator.msSaveOrOpenBlob` in `src/utils.js`) that are dead code in all modern browsers
 - Mixed component styles — class components and functional components with hooks coexist without a consistent pattern
-- `disableHostCheck: true` in webpack dev config (DNS rebinding risk, dev-only)
+
+---
+
+## Resolved Issues
+
+The following issues from the original analysis have been addressed since the fork:
+
+1. ~~**Broken Test Suite**~~ — Migrated from Enzyme/Mocha to Jest 29 + @testing-library/react. 185 tests pass across 19 suites. (PR #1)
+
+2. ~~**Duplicate `tss-react` Dependency**~~ — Consolidated to a single `tss-react` entry at `^4.1.3`. (PR #2)
+
+3. ~~**Deprecated react-dnd API**~~ — Upgraded `react-dnd` from v11 to v16; removed the deprecated `begin` callback in `useDrag`. (PR #2)
+
+4. ~~**Heavily Outdated Build Tooling**~~ — Modernized across multiple PRs:
+   - Mocha 7 → Jest 29, Enzyme → @testing-library/react (PR #1)
+   - Travis CI → GitHub Actions (PR #1)
+   - ESLint 7 → 8, Prettier 1 → 3, modernized Babel targets (PR #13, #15)
+   - Webpack 4 → 5, webpack-dev-server 3 → 5, eslint-loader → eslint-webpack-plugin (PR #17)
+   - Next.js 11 → 14 for docs site (PR #10)
+
+5. ~~**Unused Dependency**~~ — Removed `react-sortable-tree-patch-react-17`. (PR #2)
+
+6. ~~**localStorage Error Handling**~~ — Added try/catch in `load.js` and `save.js`. (PR #2)
+
+7. ~~**`disableHostCheck: true`**~~ — Replaced with `allowedHosts: 'all'` in webpack config. (PR #17)
 
 ---
 

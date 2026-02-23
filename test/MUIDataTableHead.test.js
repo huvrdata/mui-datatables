@@ -3,7 +3,7 @@ import { renderWithDnd, screen, fireEvent } from './test-utils';
 import TableHead from '../src/components/TableHead';
 import TableHeadCell from '../src/components/TableHeadCell';
 
-describe('<TableHead />', function() {
+describe('<TableHead />', function () {
   let columns;
   let handleHeadUpdateRef;
 
@@ -17,7 +17,7 @@ describe('<TableHead />', function() {
         label: 'State',
         display: 'true',
         options: { fixedHeaderOptions: { xAxis: true, yAxis: true }, selectableRows: 'multiple' },
-        customHeadRender: columnMeta => <TableHeadCell {...columnMeta}>{columnMeta.name + 's'}</TableHeadCell>,
+        customHeadRender: (columnMeta) => <TableHeadCell {...columnMeta}>{columnMeta.name + 's'}</TableHeadCell>,
         sort: null,
       },
     ];
@@ -71,7 +71,7 @@ describe('<TableHead />', function() {
   it('should render a table head with no visible column cells when all display=false', () => {
     const options = {};
     const toggleSort = () => {};
-    const newColumns = columns.map(column => ({ ...column, display: false }));
+    const newColumns = columns.map((column) => ({ ...column, display: false }));
     const { container } = renderWithDnd(
       <table>
         <TableHead
@@ -89,7 +89,7 @@ describe('<TableHead />', function() {
     const headRow = container.querySelector('tr');
     // The text content should be empty or contain only the select cell
     const columnTexts = ['First Name', 'Company', 'City Label', 'State'];
-    columnTexts.forEach(text => {
+    columnTexts.forEach((text) => {
       expect(headRow.textContent).not.toContain(text);
     });
   });

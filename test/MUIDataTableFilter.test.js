@@ -4,7 +4,7 @@ import TableFilter from '../src/components/TableFilter';
 import getTextLabels from '../src/textLabels';
 import TextField from '@mui/material/TextField';
 
-describe('<TableFilter />', function() {
+describe('<TableFilter />', function () {
   let data;
   let columns;
   let filterData;
@@ -39,7 +39,7 @@ describe('<TableFilter />', function() {
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
     const titles = container.querySelectorAll('[class*="MUIDataTableFilter-checkboxListTitle"]');
-    const labels = Array.from(titles).map(el => el.textContent);
+    const labels = Array.from(titles).map((el) => el.textContent);
     expect(labels).toEqual(['First Name', 'Company', 'City Label', 'State']);
   });
 
@@ -56,7 +56,7 @@ describe('<TableFilter />', function() {
   it('should render data table filter view with no checkboxes if filter=false for each column', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    columns = columns.map(item => (item.filter = false));
+    columns = columns.map((item) => (item.filter = false));
     const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
@@ -77,7 +77,7 @@ describe('<TableFilter />', function() {
   it('should render data table filter view no selects if filter=false for each column', () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
-    columns = columns.map(item => (item.filter = false));
+    columns = columns.map((item) => (item.filter = false));
     const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
@@ -96,11 +96,11 @@ describe('<TableFilter />', function() {
   });
 
   it("should render data table filter view with custom rendering of items if filterType = 'select'", () => {
-    columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
+    columns.forEach((item) => (item.filterOptions = { renderValue: (v) => v.toUpperCase() }));
     const options = {
       filterType: 'select',
       textLabels: getTextLabels(),
-      filterOptions: { renderValue: v => v.toUpperCase() },
+      filterOptions: { renderValue: (v) => v.toUpperCase() },
     };
     const filterList = [['Joe James'], [null], [], []];
     const { container } = render(
@@ -112,7 +112,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should render data table filter view with custom rendering of items for filterType = 'multiselect' if renderValue is provided", () => {
-    columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
+    columns.forEach((item) => (item.filterOptions = { renderValue: (v) => v.toUpperCase() }));
     const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
     const { container } = render(
@@ -172,7 +172,7 @@ describe('<TableFilter />', function() {
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
     const labels = container.querySelectorAll('.MuiInputLabel-formControl');
-    const labelTexts = Array.from(labels).map(el => el.textContent);
+    const labelTexts = Array.from(labels).map((el) => el.textContent);
     expect(labelTexts).toEqual(['First Name', 'Company', 'City Label', 'State']);
   });
 
@@ -189,7 +189,7 @@ describe('<TableFilter />', function() {
   it("should data table filter view with no TextFields if filter=false when filterType = 'textField'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    columns = columns.map(item => (item.filter = false));
+    columns = columns.map((item) => (item.filter = false));
     const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
@@ -200,7 +200,7 @@ describe('<TableFilter />', function() {
   it("should data table filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
-    columns.forEach(item => (item.filterType = 'checkbox'));
+    columns.forEach((item) => (item.filterType = 'checkbox'));
     const { container } = render(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );

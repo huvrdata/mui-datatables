@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import getTextLabels from '../src/textLabels';
 import TablePagination from '../src/components/TablePagination';
 
-describe('<TablePagination />', function() {
+describe('<TablePagination />', function () {
   let options;
 
   beforeAll(() => {
@@ -29,7 +29,14 @@ describe('<TablePagination />', function() {
     const changePage = jest.fn();
     render(
       <table>
-        <TablePagination options={options} count={100} page={1} rowsPerPage={10} changePage={changePage} changeRowsPerPage={() => {}} />
+        <TablePagination
+          options={options}
+          count={100}
+          page={1}
+          rowsPerPage={10}
+          changePage={changePage}
+          changeRowsPerPage={() => {}}
+        />
       </table>,
     );
 

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import TableResize from '../src/components/TableResize';
 import MUIDataTable from '../src/MUIDataTable';
 
-describe('<TableResize />', function() {
+describe('<TableResize />', function () {
   let options;
 
   beforeAll(() => {
@@ -57,7 +57,7 @@ describe('<TableResize />', function() {
     tableEl.getBoundingClientRect = () => ({ width: 100, height: 100 });
     Object.defineProperty(tableEl, 'offsetParent', { value: { offsetLeft: 0 } });
 
-    const setResizeable = next => {
+    const setResizeable = (next) => {
       next(cellsRef, tableEl);
     };
 

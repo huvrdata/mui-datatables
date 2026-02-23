@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from './test-utils';
 import MUIDataTable from '../src/MUIDataTable';
 
-describe('<TableBodyCell />', function() {
+describe('<TableBodyCell />', function () {
   let data;
   let columns;
 

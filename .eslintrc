@@ -1,13 +1,13 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "settings": {
     "react": {
-      "version": "latest"
+      "version": "detect"
     },
     "import/extensions": [
       ".js"
     ],
-    "import/parser": "babel-eslint",
+    "import/parser": "@babel/eslint-parser",
     "import/resolver": {
       "node": {
         "extensions": [
@@ -20,18 +20,18 @@
     }
   },
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2020,
     "sourceType": "module",
     "allowImportExportEverywhere": true,
+    "requireConfigFile": true,
     "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
+      "jsx": true
     }
   },
   "env": {
     "es6": true,
     "browser": true,
-    "mocha": true,
+    "jest": true,
     "node": true
   },
   "extends": [

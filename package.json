@@ -13,7 +13,7 @@
     "docs:dev": "next docs",
     "docs:build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider next build docs",
     "docs:export": "next export docs -o docs/export",
-    "vercel-build": "npm run docs:build && next export docs -o docs/out",
+    "vercel-build": "npm run build && npm run docs:build && next export docs -o docs/out",
     "docs:start": "next start docs",
     "coverage": "jest --coverage",
     "format": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",

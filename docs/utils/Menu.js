@@ -17,26 +17,10 @@ const useStyles = makeStyles()(theme => ({
   },
 }));
 
-const sandboxes = [
-  { name: 'Custom Component', href: 'https://codesandbox.io/embed/xrvrzryjvp?autoresize=1&hidenavigation=1' },
-  { name: 'Customize Columns', href: 'https://codesandbox.io/embed/xowj5oj8w?autoresize=1&hidenavigation=1' },
-  { name: 'Customize Footer', href: 'https://codesandbox.io/embed/5z0w0w9jyk?autoresize=1&hidenavigation=1' },
-  { name: 'Customize Styling', href: 'https://codesandbox.io/embed/0ylq1lqwp0?autoresize=1&hidenavigation=1' },
-  { name: 'Customize Toolbar', href: 'https://codesandbox.io/embed/wy2rl1nyzl?autoresize=1&hidenavigation=1' },
-  { name: 'Customize ToolbarSelect', href: 'https://codesandbox.io/embed/545ym5ov6p?autoresize=1&hidenavigation=1' },
-  { name: 'Resizable Columns', href: 'https://codesandbox.io/embed/q8w3230qpj?autoresize=1&hidenavigation=1' },
+const menuItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Examples', href: '/examples' },
 ];
-
-const SandboxItem = props => (
-  <ListItem button>
-    <ListItemText onClick={() => window.open(props.href, '_blank')} primary={props.name} />
-  </ListItem>
-);
-
-SandboxItem.propTypes = {
-  href: PropTypes.string,
-  name: PropTypes.string,
-};
 
 function Menu({ isOpen, toggle }) {
   const { classes } = useStyles();
@@ -47,11 +31,15 @@ function Menu({ isOpen, toggle }) {
           component="nav"
           subheader={
             <ListSubheader className={classes.listTitle} component="h2">
-              Examples
+              MUI-Datatables
             </ListSubheader>
           }>
-          {sandboxes.map(item => (
-            <SandboxItem href={item.href} name={item.name} />
+          {menuItems.map(item => (
+            <Link key={item.name} href={item.href} passHref legacyBehavior>
+              <ListItem button component="a">
+                <ListItemText primary={item.name} />
+              </ListItem>
+            </Link>
           ))}
         </List>
       </div>

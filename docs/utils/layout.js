@@ -77,7 +77,7 @@ function Layout({ children }) {
             <IconButton
               component="a"
               color="inherit"
-              href="https://github.com/gregnb/mui-datatables"
+              href="https://github.com/huvrdata/mui-datatables"
               aria-labelledby="appbar-github">
               <GitHub />
             </IconButton>

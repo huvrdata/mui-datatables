@@ -1,9 +1,8 @@
 import React from "react";
-import MUIDataTable from "../../src/";
+import MUIDataTable, { TableFilterList } from "../../src/";
 import Chip from '@mui/material/Chip';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import TableFilterList from '../../src/components/TableFilterList';
 import MuiTooltip from '@mui/material/Tooltip';
 import Fade from "@mui/material/Fade";
 import Checkbox from '@mui/material/Checkbox';

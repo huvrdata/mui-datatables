@@ -75,43 +75,38 @@ class Example extends React.Component {
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
       onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
-        console.log(rowsSelectedData, allRows, rowsSelected);
         this.setState({ rowsSelected: rowsSelected });
       },
       onRowsDelete: (rowsDeleted, newData) => {
-        console.log('rowsDeleted');
-        console.dir(rowsDeleted);
-        console.dir(newData);
         if (rowsDeleted && rowsDeleted.data && rowsDeleted.data[0] && rowsDeleted.data[0].dataIndex === 0) {
           window.alert('Can\'t delete this!');
           return false;
         };
-        this.setState({ 
+        this.setState({
           data: newData,
-          rowsSelected: [] 
+          rowsSelected: []
         });
-        console.log(rowsDeleted, "were deleted!");
       },
       onChangePage: (numberRows) => {
-        console.log(numberRows);
+        // no-op
       },
       onSearchChange: (searchText) => {
-        console.log(searchText);
+        // no-op
       },
       onColumnSortChange: (column, direction) => {
-        console.log(column, direction);
+        // no-op
       },
       onViewColumnsChange: (column, action) => {
-        console.log(column, action);
+        // no-op
       },
       onFilterChange: (column, filters) => {
-        console.log(column, filters);
+        // no-op
       },
       onCellClick: (cellData, cellMeta) => {
-        console.log(cellData, cellMeta);
+        // no-op
       },
       onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
+        // no-op
       },
       isRowSelectable: (dataIndex, selectedRows) => {
         //prevents selection of any additional row after the third

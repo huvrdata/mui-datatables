@@ -11,7 +11,7 @@ const defaultToolbarStyles = {
 class CustomToolbar extends React.Component {
   
   handleClick = () => {
-    console.log("clicked on icon!");
+    // no-op
   }
 
   render() {

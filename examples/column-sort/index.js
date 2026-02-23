@@ -26,7 +26,6 @@ class Example extends React.Component {
           */
           sortCompare: (order) => {
             return (obj1, obj2) => {
-              console.log(order);
               let val1 = parseInt(obj1.data, 10);
               let val2 = parseInt(obj2.data, 10);
               return (val1 - val2) * (order === 'asc' ? 1 : -1);

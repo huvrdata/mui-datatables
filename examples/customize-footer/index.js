@@ -88,8 +88,6 @@ function Example() {
       );
     },
     customTableBodyFooterRender: function(opts) {
-      console.dir(opts);
-
       let avgAge =
         opts.data.reduce((accu, item) => {
           return accu + item.data[3];

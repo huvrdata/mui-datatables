@@ -65,7 +65,6 @@ class MessageManager extends Component {
               <Fragment>
                 <Waypoint
                   onEnter={() => {
-                    console.log("WAYPOINT REACHED");
                     const newData = this.buildTestData(
                       30,
                       filteredMessages.length
@@ -108,7 +107,7 @@ class MessageManager extends Component {
     pagination: false,
     tableBodyHeight:'500px',
     onRowClick(rowNode) {
-      console.log(rowNode);
+      // no-op
     }
   };
 

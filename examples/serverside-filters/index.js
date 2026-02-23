@@ -148,20 +148,18 @@ class Example extends React.Component {
 
       // callback that gets executed when filters are confirmed
       onFilterConfirm: (filterList) => {
-        console.log('onFilterConfirm');
-        console.dir(filterList);
+        // no-op
       },
 
       onFilterDialogOpen: () => {
-        console.log('filter dialog opened');
+        // no-op
       },
       onFilterDialogClose: () => {
-        console.log('filter dialog closed');
+        // no-op
       },
       onFilterChange: (column, filterList, type) => {
         if (type === 'chip') {
           var newFilters = () => (filterList);
-          console.log('updating filters via chip');
           this.handleFilterSubmit(newFilters);
         }
       },

@@ -111,7 +111,7 @@ class Example extends React.Component {
 
     let options = {
       onFilterChipClose: (index, removedFilter, filterList) => {
-        console.log(index, removedFilter, filterList);
+        // no-op
       },
       selectableRows: 'single',
       selectToolbarPlacement: 'none',

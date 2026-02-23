@@ -168,9 +168,9 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'vertical',
-      onColumnSortChange: (changedColumn, direction) => console.log('changedColumn: ', changedColumn, 'direction: ', direction),
-      onChangeRowsPerPage: numberOfRows => console.log('numberOfRows: ', numberOfRows),
-      onChangePage: currentPage => console.log('currentPage: ', currentPage)
+      onColumnSortChange: (changedColumn, direction) => { /* no-op */ },
+      onChangeRowsPerPage: numberOfRows => { /* no-op */ },
+      onChangePage: currentPage => { /* no-op */ }
     };
 
     return (

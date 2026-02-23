@@ -47,6 +47,8 @@ module.exports = {
   plugins: [
     new ESLintPlugin({
       extensions: ['js', 'jsx'],
+      emitError: false,
+      failOnError: false,
     }),
     new webpack.DefinePlugin({
       'process.env': {

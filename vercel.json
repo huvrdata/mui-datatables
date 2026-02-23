@@ -1,14 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "docs/export"
-      }
-    }
-  ],
-  "installCommand": "npm install",
-  "buildCommand": "npm run docs:build && npm run docs:export"
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "docs/out",
+  "installCommand": "npm install --legacy-peer-deps"
 }

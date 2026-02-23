@@ -11,8 +11,7 @@ import GitHub from '../icons/GitHub';
 import { makeStyles } from 'tss-react/mui';
 import Menu from './Menu';
 
-/* eslint-disable import/no-webpack-loader-syntax  */
-import lightTheme from '!raw-loader!prismjs/themes/prism.css';
+import lightTheme from 'prismjs/themes/prism.css?raw';
 
 const useStyles = makeStyles()(theme => ({
   appBar: {
@@ -64,6 +63,10 @@ function Layout({ children }) {
 
   return (
     <div className={classes.wrapper}>
+      <Head>
+        <title>Material-UI DataTables</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </Head>
       <Menu isOpen={drawerIsOpen} toggle={toggleDrawer} />
       <AppBar classes={{ root: classes.appBar }}>
         <Toolbar classes={{ root: classes.toolBar }}>

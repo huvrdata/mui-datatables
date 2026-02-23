@@ -2,14 +2,9 @@
 const path = require('path');
 
 module.exports = {
+  output: 'export',
   experimental: {
     esmExternals: 'loose',
-  },
-  exportPathMap: function() {
-    return {
-      '/': { page: '/' },
-      '/examples': { page: '/examples' },
-    }
   },
   webpack: (config, { defaultLoaders }) => {
     const examplesDir = path.resolve(__dirname, 'examples');
@@ -29,6 +24,24 @@ module.exports = {
       ...config.resolve.alias,
       [srcDir]: distDir,
     };
+
+    // Replace raw-loader with webpack 5 native asset/source for ?raw imports
+    config.module.rules.push({
+      resourceQuery: /raw/,
+      type: 'asset/source',
+    });
+
+    // Exclude ?raw queries from Next.js built-in CSS processing
+    const cssRules = config.module.rules.find(
+      rule => rule.oneOf && Array.isArray(rule.oneOf)
+    );
+    if (cssRules) {
+      cssRules.oneOf.forEach(rule => {
+        if (rule.test && rule.test.toString().includes('css')) {
+          rule.resourceQuery = { not: [/raw/] };
+        }
+      });
+    }
 
     return config;
   },

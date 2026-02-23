@@ -23,6 +23,7 @@ jobs:
     strategy:
       matrix:
         node-version: [20, 22, 24]
+        react-version: [17, 18, 19]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,9 +31,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
       - run: npm ci
+      - name: Test with React ${{ matrix.react-version }}
+        if: matrix.react-version == 17
+        run: npm install --no-save react@17 react-dom@17 @testing-library/react@12.1.4
+      - name: Test with React ${{ matrix.react-version }}
+        if: matrix.react-version == 18
+        run: npm install --no-save react@18 react-dom@18 @testing-library/react@14
       - run: npm run coverage
       - uses: actions/upload-artifact@v4
-        if: matrix.node-version == 22
+        if: matrix.node-version == 22 && matrix.react-version == 19
         with:
           name: coverage-report
           path: coverage/

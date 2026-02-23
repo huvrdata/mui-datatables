@@ -1,6 +1,8 @@
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: {
     app: ['core-js/stable', 'regenerator-runtime/runtime', './examples/Router/index.js'],
   },
@@ -10,20 +12,31 @@ module.exports = {
     filename: 'bundle.js',
   },
   devtool: 'source-map',
+  watchOptions: {
+    ignored: /node_modules/,
+  },
   devServer: {
-    disableHostCheck: true,
+    static: {
+      directory: __dirname,
+      watch: false,
+    },
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
+    allowedHosts: 'all',
     host: 'localhost',
     hot: true,
-    inline: true,
     port: 5050,
-    stats: 'errors-warnings',
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/i,
@@ -32,8 +45,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),

@@ -1886,6 +1886,7 @@ class MUIDataTable extends React.Component {
               searchTextUpdate={this.searchTextUpdate}
               searchClose={this.searchClose}
               tableRef={this.getTableContentRef}
+              printRef={this.tableContent}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               updateColumns={this.updateColumns}

@@ -13,7 +13,7 @@ import Menu from './Menu';
 
 import lightTheme from 'prismjs/themes/prism.css?raw';
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   appBar: {
     backgroundColor: '#23232f',
   },

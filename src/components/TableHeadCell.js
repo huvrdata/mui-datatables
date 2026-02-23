@@ -10,7 +10,7 @@ import useColumnDrop from '../hooks/useColumnDrop.js';
 import { makeStyles } from 'tss-react/mui';
 import { useDrag } from 'react-dnd';
 
-const useStyles = makeStyles({ name: 'MUIDataTableHeadCell' })(theme => ({
+const useStyles = makeStyles({ name: 'MUIDataTableHeadCell' })((theme) => ({
   root: {},
   fixedHeader: {
     position: 'sticky',
@@ -91,7 +91,7 @@ const TableHeadCell = ({
 
   const { classes } = useStyles();
 
-  const handleKeyboardSortInput = e => {
+  const handleKeyboardSortInput = (e) => {
     if (e.key === 'Enter') {
       toggleSort(index);
     }
@@ -129,7 +129,7 @@ const TableHeadCell = ({
       colIndex: index,
       headCellRefs: draggableHeadCellRefs,
     }),
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
     end: (item, monitor) => {
@@ -188,7 +188,7 @@ const TableHeadCell = ({
 
   return (
     <TableCell
-      ref={ref => {
+      ref={(ref) => {
         drop && drop(ref);
         setCellRef && setCellRef(index + 1, colPosition + 1, ref);
       }}

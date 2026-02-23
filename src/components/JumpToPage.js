@@ -9,7 +9,7 @@ import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils.js';
 import clsx from 'clsx';
 
-const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })(theme => ({
+const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })((theme) => ({
   root: {
     color: theme.palette.text.primary,
   },
@@ -43,7 +43,7 @@ const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })(theme => ({
 function JumpToPage(props) {
   const { classes } = useStyles();
 
-  const handlePageChange = event => {
+  const handlePageChange = (event) => {
     props.changePage(parseInt(event.target.value, 10));
   };
 
@@ -76,7 +76,7 @@ function JumpToPage(props) {
         value={getPageValue(count, rowsPerPage, page)}
         onChange={handlePageChange}
         style={{ marginRight: 0 }}>
-        {pages.map(pageVal => (
+        {pages.map((pageVal) => (
           <MenuItemComponent className={classes.menuItem} key={pageVal} value={pageVal}>
             {pageVal + 1}
           </MenuItemComponent>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { getColModel, reorderColumns, handleHover } from '../src/hooks/useColumnDrop';
 
-describe('useColumnDrop', function() {
+describe('useColumnDrop', function () {
   beforeAll(() => {});
 
   it('should reorder columns when reorderColumns is called', () => {

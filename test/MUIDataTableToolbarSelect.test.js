@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableToolbarSelect />', function() {
+describe('<TableToolbarSelect />', function () {
   it('should render table toolbar select', () => {
     const onRowsDelete = () => {};
     const { container } = render(
@@ -32,7 +32,7 @@ describe('<TableToolbarSelect />', function() {
     expect(customToolbarSelect).toHaveBeenCalledWith(selectedRows, displayData, expect.any(Function));
   });
 
-  it('should throw TypeError if selectedRows is not an array of numbers', done => {
+  it('should throw TypeError if selectedRows is not an array of numbers', (done) => {
     const onRowsDelete = () => {};
     const selectRowUpdate = () => {};
     const customToolbarSelect = (_, __, setSelectedRows) => {

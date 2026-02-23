@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import TableSearch from '../src/components/TableSearch';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableSearch />', function() {
+describe('<TableSearch />', function () {
   it('should render a search bar', () => {
     const options = { textLabels: getTextLabels() };
     const onSearch = () => {};

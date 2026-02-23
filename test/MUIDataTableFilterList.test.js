@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import TableFilterList from '../src/components/TableFilterList';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableFilterList />', function() {
+describe('<TableFilterList />', function () {
   let data;
   let columns;
   let filterData;
@@ -35,7 +35,7 @@ describe('<TableFilterList />', function() {
     const options = { textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
     const filterUpdate = jest.fn();
-    const columnNames = columns.map(column => ({
+    const columnNames = columns.map((column) => ({
       name: column.name,
       filterType: column.filterType || options.filterType,
     }));
@@ -43,12 +43,12 @@ describe('<TableFilterList />', function() {
     const { container } = render(
       <TableFilterList
         options={options}
-        filterListRenderers={columns.map(c => {
+        filterListRenderers={columns.map((c) => {
           if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
           if (c.customFilterListRender) return c.customFilterListRender;
-          return f => f;
+          return (f) => f;
         })}
-        customFilterListUpdate={columns.map(c => {
+        customFilterListUpdate={columns.map((c) => {
           return c.customFilterListOptions && c.customFilterListOptions.update
             ? c.customFilterListOptions.update
             : null;
@@ -74,7 +74,7 @@ describe('<TableFilterList />', function() {
     };
     const filterList = [['Joe James'], [], [], []];
     const filterUpdate = jest.fn();
-    const columnNames = columns.map(column => ({
+    const columnNames = columns.map((column) => ({
       name: column.name,
       filterType: column.filterType || options.filterType,
     }));
@@ -82,12 +82,12 @@ describe('<TableFilterList />', function() {
     const { container } = render(
       <TableFilterList
         options={options}
-        filterListRenderers={columns.map(c => {
+        filterListRenderers={columns.map((c) => {
           if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
           if (c.customFilterListRender) return c.customFilterListRender;
-          return f => f;
+          return (f) => f;
         })}
-        customFilterListUpdate={columns.map(c => {
+        customFilterListUpdate={columns.map((c) => {
           return c.customFilterListOptions && c.customFilterListOptions.update
             ? c.customFilterListOptions.update
             : null;
@@ -114,7 +114,7 @@ describe('<TableFilterList />', function() {
       filterUpdateCall();
       next();
     };
-    const columnNames = columns.map(column => ({
+    const columnNames = columns.map((column) => ({
       name: column.name,
       filterType: column.filterType || options.filterType,
     }));
@@ -122,12 +122,12 @@ describe('<TableFilterList />', function() {
     const { container } = render(
       <TableFilterList
         options={options}
-        filterListRenderers={columns.map(c => {
+        filterListRenderers={columns.map((c) => {
           if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
           if (c.customFilterListRender) return c.customFilterListRender;
-          return f => f;
+          return (f) => f;
         })}
-        customFilterListUpdate={columns.map(c => {
+        customFilterListUpdate={columns.map((c) => {
           return c.customFilterListOptions && c.customFilterListOptions.update
             ? c.customFilterListOptions.update
             : null;
@@ -184,7 +184,7 @@ describe('<TableFilterList />', function() {
       filterUpdateCall();
       next();
     };
-    const columnNames = columnsWithCustomFilterListOptions.map(column => ({
+    const columnNames = columnsWithCustomFilterListOptions.map((column) => ({
       name: column.name,
       filterType: column.filterType || options.filterType,
     }));
@@ -192,12 +192,12 @@ describe('<TableFilterList />', function() {
     const { container } = render(
       <TableFilterList
         options={options}
-        filterListRenderers={columnsWithCustomFilterListOptions.map(c => {
+        filterListRenderers={columnsWithCustomFilterListOptions.map((c) => {
           if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
           if (c.customFilterListRender) return c.customFilterListRender;
-          return f => f;
+          return (f) => f;
         })}
-        customFilterListUpdate={columnsWithCustomFilterListOptions.map(c => {
+        customFilterListUpdate={columnsWithCustomFilterListOptions.map((c) => {
           return c.customFilterListOptions && c.customFilterListOptions.update
             ? c.customFilterListOptions.update
             : null;

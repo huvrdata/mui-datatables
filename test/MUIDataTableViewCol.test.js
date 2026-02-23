@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from './test-utils';
 import TableViewCol from '../src/components/TableViewCol';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableViewCol />', function() {
+describe('<TableViewCol />', function () {
   let columns;
   let options;
 

@@ -17,7 +17,7 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
     }
   }, [hide, isOpen, open]);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     anchorEl.current = event.currentTarget;
     open(true);
   };
@@ -47,7 +47,7 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
 
   const triggerProps = {
     key: 'content',
-    onClick: event => {
+    onClick: (event) => {
       if (trigger.props.onClick) trigger.props.onClick();
       handleClick(event);
     },

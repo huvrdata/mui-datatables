@@ -10,17 +10,11 @@ Below is a summary of remaining issues, what has been resolved since the fork, a
 
 ## Remaining Issues
 
-### Critical
-
-1. **No React 19 Compatibility** — Peer dependencies allow MUI v5/v6 (`@mui/material ^5.0.0 || ^6.0.0`) but still cap React at v18 (`react ^17.0.0 || ^18.0.0`). React 19 is not supported.
-
 ### Moderate
 
-2. **Monolithic Architecture** — `MUIDataTable.js` is ~2,000 lines — a single class component handling data processing, pagination, sorting, filtering, searching, row selection, column ordering, and state persistence.
+1. **Monolithic Architecture** — `MUIDataTable.js` is ~2,000 lines — a single class component handling data processing, pagination, sorting, filtering, searching, row selection, column ordering, and state persistence.
 
-3. **Rollup 2** — The production build still uses Rollup 2 (current: 4). This is the last major outdated build tool remaining.
-
-4. **Accumulated Deprecation Shims** — The codebase still carries backward-compatibility shims for v2/v3 options (`fixedHeaderOptions`, `serverSideFilterList`, `onRowsSelect`), adding complexity without cleanup.
+2. **Accumulated Deprecation Shims** — The codebase still carries backward-compatibility shims for v2/v3 options (`fixedHeaderOptions`, `serverSideFilterList`, `onRowsSelect`), adding complexity without cleanup.
 
 ### Minor
 
@@ -42,16 +36,20 @@ The following issues from the original analysis have been addressed since the fo
 
 4. ~~**Heavily Outdated Build Tooling**~~ — Modernized across multiple PRs:
    - Mocha 7 → Jest 29, Enzyme → @testing-library/react (PR #1)
-   - Travis CI → GitHub Actions (PR #1)
+   - Travis CI → GitHub Actions with React 17/18/19 CI matrix (PR #1)
    - ESLint 7 → 8, Prettier 1 → 3, modernized Babel targets (PR #13, #15)
    - Webpack 4 → 5, webpack-dev-server 3 → 5, eslint-loader → eslint-webpack-plugin (PR #17)
    - Next.js 11 → 14 for docs site (PR #10)
+   - Rollup 2 → 4, added ESM module output, replaced uglify with @rollup/plugin-terser (PR #20)
+   - react-to-print v2 → v3 (PR #2)
 
 5. ~~**Unused Dependency**~~ — Removed `react-sortable-tree-patch-react-17`. (PR #2)
 
 6. ~~**localStorage Error Handling**~~ — Added try/catch in `load.js` and `save.js`. (PR #2)
 
 7. ~~**`disableHostCheck: true`**~~ — Replaced with `allowedHosts: 'all'` in webpack config. (PR #17)
+
+8. ~~**React 19 Compatibility**~~ — Peer dependencies updated to support React 17/18/19. Tests pass across all three versions via CI matrix. (PR #19)
 
 ---
 

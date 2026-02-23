@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles({ name: 'MUIDataTableSearch' })(theme => ({
+const useStyles = makeStyles({ name: 'MUIDataTableSearch' })((theme) => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
@@ -29,11 +29,11 @@ const useStyles = makeStyles({ name: 'MUIDataTableSearch' })(theme => ({
 const TableSearch = ({ options, searchText, onSearch, onHide }) => {
   const { classes } = useStyles();
 
-  const handleTextChange = event => {
+  const handleTextChange = (event) => {
     onSearch(event.target.value);
   };
 
-  const onKeyDown = event => {
+  const onKeyDown = (event) => {
     if (event.key === 'Escape') {
       onHide();
     }

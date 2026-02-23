@@ -7,7 +7,7 @@ import 'prismjs/components/prism-bash';
 import Paper from '@mui/material/Paper';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles()(theme => ({}));
+const useStyles = makeStyles()((theme) => ({}));
 
 function CodeSnippet({ language, text }) {
   const { classes } = useStyles();

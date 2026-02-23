@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 
-export const defaultFilterStyles = theme => ({
+export const defaultFilterStyles = (theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     padding: '24px 24px 36px 24px',
@@ -162,7 +162,7 @@ class TableFilter extends React.Component {
     const { classes, filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
-      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
+      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : (v) => v;
 
     return (
       <Grid item key={index} xs={6}>
@@ -212,7 +212,7 @@ class TableFilter extends React.Component {
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue
         ? column.filterOptions.renderValue
-        : v => (v != null ? v.toString() : '');
+        : (v) => (v != null ? v.toString() : '');
     const width = (column.filterOptions && column.filterOptions.fullWidth) === true ? 12 : 6;
 
     return (
@@ -227,7 +227,7 @@ class TableFilter extends React.Component {
             fullWidth
             value={filterList[index].length ? filterList[index].toString() : textLabels.all}
             name={column.name}
-            onChange={event => this.handleDropdownChange(event, index, column.name)}
+            onChange={(event) => this.handleDropdownChange(event, index, column.name)}
             input={<Input name={column.name} id={column.name} />}>
             <MenuItem value={textLabels.all} key={0}>
               {textLabels.all}
@@ -264,7 +264,7 @@ class TableFilter extends React.Component {
             label={column.label}
             value={filterList[index].toString() || ''}
             data-testid={'filtertextfield-' + column.name}
-            onChange={event => this.handleTextFieldChange(event, index, column.name)}
+            onChange={(event) => this.handleTextFieldChange(event, index, column.name)}
           />
         </FormControl>
       </Grid>
@@ -277,7 +277,7 @@ class TableFilter extends React.Component {
     const { classes, filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
-      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
+      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : (v) => v;
     const width = (column.filterOptions && column.filterOptions.fullWidth) === true ? 12 : 6;
     return (
       <Grid
@@ -291,9 +291,9 @@ class TableFilter extends React.Component {
             multiple
             fullWidth
             value={filterList[index] || []}
-            renderValue={selected => selected.map(renderItem).join(', ')}
+            renderValue={(selected) => selected.map(renderItem).join(', ')}
             name={column.name}
-            onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
+            onChange={(event) => this.handleMultiselectChange(index, event.target.value, column.name)}
             input={<Input name={column.name} id={column.name} />}>
             {filterData[index].map((filterValue, filterIndex) => (
               <MenuItem value={filterValue} key={filterIndex + 1}>
@@ -403,12 +403,12 @@ class TableFilter extends React.Component {
               return filterType === 'checkbox'
                 ? this.renderCheckbox(column, index, components)
                 : filterType === 'multiselect'
-                ? this.renderMultiselect(column, index, components)
-                : filterType === 'textField'
-                ? this.renderTextField(column, index)
-                : filterType === 'custom'
-                ? this.renderCustomField(column, index)
-                : this.renderSelect(column, index);
+                  ? this.renderMultiselect(column, index, components)
+                  : filterType === 'textField'
+                    ? this.renderTextField(column, index)
+                    : filterType === 'custom'
+                      ? this.renderCustomField(column, index)
+                      : this.renderSelect(column, index);
             }
           })}
         </Grid>

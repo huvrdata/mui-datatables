@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from './test-utils';
 import getTextLabels from '../src/textLabels';
 import TableBody from '../src/components/TableBody';
 
-describe('<TableBody />', function() {
+describe('<TableBody />', function () {
   let data;
   let displayData;
   let columns;
@@ -154,7 +154,14 @@ describe('<TableBody />', function() {
       columns,
       page: 0,
       rowsPerPage: 15,
-      selectedRows: { data: [{ index: 1, dataIndex: 1 }, { index: 2, dataIndex: 2 }, { index: 3, dataIndex: 3 }], lookup: { 1: true, 2: true, 3: true } },
+      selectedRows: {
+        data: [
+          { index: 1, dataIndex: 1 },
+          { index: 2, dataIndex: 2 },
+          { index: 3, dataIndex: 3 },
+        ],
+        lookup: { 1: true, 2: true, 3: true },
+      },
       selectRowUpdate: () => {},
       expandedRows: [],
       toggleExpandRow: () => {},
@@ -262,7 +269,7 @@ describe('<TableBody />', function() {
     const options = {
       selectableRows: true,
       selectableRowsOnClick: true,
-      isRowSelectable: dataIndex => (dataIndex === 2 ? false : true),
+      isRowSelectable: (dataIndex) => (dataIndex === 2 ? false : true),
     };
     const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = jest.fn();
@@ -301,7 +308,7 @@ describe('<TableBody />', function() {
         </tr>
       ),
       expandableRowsOnClick: true,
-      isRowExpandable: dataIndex => (dataIndex === 2 ? false : true),
+      isRowExpandable: (dataIndex) => (dataIndex === 2 ? false : true),
     };
 
     const { container } = renderTableBody({
@@ -411,9 +418,9 @@ describe('<TableBody />', function() {
         </tr>
       ),
       expandableRowsOnClick: true,
-      isRowExpandable: dataIndex => (dataIndex === 2 ? true : false),
+      isRowExpandable: (dataIndex) => (dataIndex === 2 ? true : false),
     };
-    const toggleExpandRow = jest.fn(data => (expandedRowData = data));
+    const toggleExpandRow = jest.fn((data) => (expandedRowData = data));
 
     const { container } = renderTableBody({
       data: displayData,
@@ -441,7 +448,7 @@ describe('<TableBody />', function() {
     let expandedRowData;
     const options = { selectableRows: true, expandableRows: true, expandableRowsOnClick: true };
     const selectRowUpdate = jest.fn();
-    const toggleExpandRow = data => (expandedRowData = data);
+    const toggleExpandRow = (data) => (expandedRowData = data);
 
     const { container } = renderTableBody({
       data: displayData,
@@ -477,7 +484,7 @@ describe('<TableBody />', function() {
       expandableRowsOnClick: true,
     };
     const selectRowUpdate = (type, data) => (selectedRowData = data);
-    const toggleExpandRow = data => (expandedRowData = data);
+    const toggleExpandRow = (data) => (expandedRowData = data);
 
     const { container } = renderTableBody({
       data: displayData,
@@ -588,7 +595,11 @@ describe('<TableBody />', function() {
     fireEvent.click(row);
 
     expect(onRowClick).toHaveBeenCalledTimes(1);
-    expect(onRowClick).toHaveBeenCalledWith(data[2], expect.objectContaining({ rowIndex: 2, dataIndex: 2 }), expect.anything());
+    expect(onRowClick).toHaveBeenCalledWith(
+      data[2],
+      expect.objectContaining({ rowIndex: 2, dataIndex: 2 }),
+      expect.anything(),
+    );
   });
 
   it("should add custom props to rows if 'setRowProps' provided", () => {

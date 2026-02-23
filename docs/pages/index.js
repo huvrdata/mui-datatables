@@ -9,7 +9,7 @@ import CodeSnippet from '../utils/CodeSnippet';
 import Layout from '../utils/layout';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   stepIcon: {
     fontSize: '30px',
     marginRight: theme.spacing(2),
@@ -31,10 +31,10 @@ function Homepage() {
     <Layout>
       <div>
         <p>
-          MUI-Datatables is a data tables component built on <a href="https://mui.com">Material-UI V5 / V6</a>.
-          It comes with features like filtering, view/hide columns, search, export to CSV download, printing,
-          selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
-          are several responsive modes for mobile/tablet devices.
+          MUI-Datatables is a data tables component built on <a href="https://mui.com">Material-UI V5 / V6</a>. It comes
+          with features like filtering, view/hide columns, search, export to CSV download, printing, selectable rows,
+          pagination, and sorting. On top of the ability to customize styling on most views, there are several
+          responsive modes for mobile/tablet devices.
         </p>
         <img
           src="/static/mui-datatables-main.jpg"

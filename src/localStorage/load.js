@@ -1,6 +1,6 @@
 const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
-export const load = storageKey => {
+export const load = (storageKey) => {
   if (isBrowser) {
     try {
       const serializedState = window.localStorage.getItem(storageKey);

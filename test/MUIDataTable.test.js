@@ -5,18 +5,16 @@ import TableFilterList from '../src/components/TableFilterList';
 import getTextLabels from '../src/textLabels';
 import { getCollatorComparator } from '../src/utils';
 
-describe('<MUIDataTable />', function() {
+describe('<MUIDataTable />', function () {
   const tableId = 'tableID';
   let data;
   let columns;
-  let renderCities = (value, tableMeta, updateValueFn) => (
-    <span>{value}</span>
-  );
-  let renderName = value => value.split(' ')[1] + ', ' + value.split(' ')[0];
-  let renderState = value => value;
-  let renderHead = columnMeta => columnMeta.name + 's';
-  let defaultRenderCustomFilterList = f => f;
-  let renderCustomFilterList = f => `Name: ${f}`;
+  let renderCities = (value, tableMeta, updateValueFn) => <span>{value}</span>;
+  let renderName = (value) => value.split(' ')[1] + ', ' + value.split(' ')[0];
+  let renderState = (value) => value;
+  let renderHead = (columnMeta) => columnMeta.name + 's';
+  let defaultRenderCustomFilterList = (f) => f;
+  let renderCustomFilterList = (f) => `Name: ${f}`;
 
   beforeAll(() => {
     columns = [
@@ -55,9 +53,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly re-build display after xhr with serverSide=true', async () => {
-    const { container, rerender } = render(
-      <MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />,
-    );
+    const { container, rerender } = render(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
     expect(container.querySelectorAll('tbody tr').length).toBe(1);
 
     rerender(<MUIDataTable columns={columns} data={data} options={{ serverSide: true }} />);
@@ -67,9 +63,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly set tableId', () => {
-    const { container } = render(
-      <MUIDataTable columns={columns} data={[]} options={{ tableId: 'myTable123' }} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={[]} options={{ tableId: 'myTable123' }} />);
     const elements = container.querySelectorAll('[data-tableid="myTable123"]');
     expect(elements.length).toBeGreaterThanOrEqual(1);
   });
@@ -78,7 +72,7 @@ describe('<MUIDataTable />', function() {
     const { container, rerender } = render(<MUIDataTable columns={columns} data={data} />);
     expect(container.querySelectorAll('tbody tr').length).toBe(4);
 
-    let newData = data.map(item => [...item]);
+    let newData = data.map((item) => [...item]);
     newData[0][0] = 'Testing Name';
     rerender(<MUIDataTable columns={columns} data={newData} />);
 
@@ -95,9 +89,7 @@ describe('<MUIDataTable />', function() {
       textLabels: { newObj: { test: 'bar' } },
       downloadOptions: { separator: ';' },
     };
-    const { rerender } = render(
-      <MUIDataTable columns={columns} data={[]} options={options} />,
-    );
+    const { rerender } = render(<MUIDataTable columns={columns} data={[]} options={options} />);
 
     rerender(<MUIDataTable columns={columns} data={data} options={newOptions} />);
     // No crash = options updated correctly
@@ -113,9 +105,7 @@ describe('<MUIDataTable />', function() {
       { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={localData} options={{}} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={localData} options={{}} />);
 
     // Click to sort ascending
     fireEvent.click(screen.getByTestId('headcol-0'));
@@ -131,11 +121,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly sort when sortThirdClickReset is true', () => {
-    const localColumns = [
-      { name: 'Name', options: { sortThirdClickReset: true } },
-      'Company',
-      'Location',
-    ];
+    const localColumns = [{ name: 'Name', options: { sortThirdClickReset: true } }, 'Company', 'Location'];
     const localData = [
       { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
       { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
@@ -143,9 +129,7 @@ describe('<MUIDataTable />', function() {
       { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={localData} options={{}} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={localData} options={{}} />);
 
     // Click 1: ascending
     fireEvent.click(screen.getByTestId('headcol-0'));
@@ -191,18 +175,16 @@ describe('<MUIDataTable />', function() {
       rowsPerPage: 1,
       rowsPerPageOptions: [1, 2, 4],
       page: 1,
-      onChangePage: current => (currentPage = current),
+      onChangePage: (current) => (currentPage = current),
     };
-    const { container, rerender } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container, rerender } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     // Click back button
     fireEvent.click(screen.getByTestId('pagination-back'));
     expect(currentPage).toBe(0);
 
     // Add data
-    let newData = data.map(item => [...item]);
+    let newData = data.map((item) => [...item]);
     newData.push(['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined]);
     rerender(<MUIDataTable columns={columns} data={newData} options={options} />);
 
@@ -213,9 +195,7 @@ describe('<MUIDataTable />', function() {
 
   it('should add custom props to table if setTableProps provided', () => {
     const options = { setTableProps: jest.fn().mockReturnValue({ myProp: 'test', className: 'testClass' }) };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={[]} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={[]} options={options} />);
     const table = container.querySelector('table');
     expect(table.className).toContain('testClass');
     expect(options.setTableProps).toHaveBeenCalled();
@@ -229,9 +209,7 @@ describe('<MUIDataTable />', function() {
 
   it('should not render pagination when disabled in options', () => {
     const options = { pagination: false };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(container.querySelector('[data-testid="pagination-next"]')).toBeNull();
   });
 
@@ -243,9 +221,7 @@ describe('<MUIDataTable />', function() {
       download: false,
       viewColumns: false,
     };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(container.querySelector('[role="toolbar"]')).toBeNull();
   });
 
@@ -258,7 +234,7 @@ describe('<MUIDataTable />', function() {
       defaultRenderCustomFilterList,
       defaultRenderCustomFilterList,
     ];
-    const columnNames = columns.map(column => ({ name: column.name }));
+    const columnNames = columns.map((column) => ({ name: column.name }));
 
     const { container } = render(
       <TableFilterList
@@ -275,12 +251,12 @@ describe('<MUIDataTable />', function() {
 
   it('should create Chip with custom label when filterList and customFilterListOptions are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
-    const filterListRenderers = columns.map(c => {
+    const filterListRenderers = columns.map((c) => {
       return c.options && c.options.customFilterListOptions && c.options.customFilterListOptions.render
         ? c.options.customFilterListOptions.render
         : defaultRenderCustomFilterList;
     });
-    const columnNames = columns.map(column => ({ name: column.name }));
+    const columnNames = columns.map((column) => ({ name: column.name }));
 
     const { container } = render(
       <TableFilterList
@@ -305,7 +281,7 @@ describe('<MUIDataTable />', function() {
       defaultRenderCustomFilterList,
       defaultRenderCustomFilterList,
     ];
-    const columnNames = columns.map(column => ({ name: column.name }));
+    const columnNames = columns.map((column) => ({ name: column.name }));
 
     const { container } = render(
       <TableFilterList
@@ -328,7 +304,7 @@ describe('<MUIDataTable />', function() {
       defaultRenderCustomFilterList,
       defaultRenderCustomFilterList,
     ];
-    const columnNames = columns.map(column => ({ name: column.name }));
+    const columnNames = columns.map((column) => ({ name: column.name }));
 
     const { container } = render(
       <TableFilterList
@@ -345,17 +321,13 @@ describe('<MUIDataTable />', function() {
 
   it('should render a footer after the tbody element when customTableBodyFooterRender is called', () => {
     const options = {};
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(container.querySelector('#custom_column_footer')).toBeNull();
   });
 
   it('should filter displayData when searchText is set', () => {
     const options = { searchText: 'Joe' };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(1);
     expect(rows[0].textContent).toContain('Joe');
@@ -372,9 +344,7 @@ describe('<MUIDataTable />', function() {
       { name: 'State' },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={data} options={options} />);
 
     // Open filter dialog
     fireEvent.click(screen.getByTestId('Filter Table-iconButton'));
@@ -390,9 +360,7 @@ describe('<MUIDataTable />', function() {
 
   it('should skip client side filtering if server side filtering is enabled', () => {
     const options = { filterType: 'textField', serverSide: true };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     // With serverSide=true, all rows should still show regardless of filters
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(data.length);
@@ -415,9 +383,7 @@ describe('<MUIDataTable />', function() {
       { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={data} options={options} />);
 
     fireEvent.click(screen.getByTestId('Filter Table-iconButton'));
 
@@ -440,9 +406,7 @@ describe('<MUIDataTable />', function() {
 
   it('should not render select toolbar when disableToolbarSelect=true', () => {
     const options = { disableToolbarSelect: true, selectableRows: 'multiple', selectableRowsOnClick: true };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     // Click a row to select it
     const row = container.querySelector('[data-testid="MUIDataTableBodyRow-0"]');
@@ -454,9 +418,7 @@ describe('<MUIDataTable />', function() {
 
   it('should not render select toolbar when selectToolbarPlacement="none"', () => {
     const options = { selectToolbarPlacement: 'none', selectableRows: 'multiple', selectableRowsOnClick: true };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const row = container.querySelector('[data-testid="MUIDataTableBodyRow-0"]');
     if (row) fireEvent.click(row);
@@ -468,9 +430,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render select toolbar by default', () => {
     const options = { selectableRows: 'multiple', selectableRowsOnClick: true };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const row = container.querySelector('[data-testid="MUIDataTableBodyRow-0"]');
     if (row) fireEvent.click(row);
@@ -480,9 +440,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
     const options = { selectToolbarPlacement: 'above', selectableRows: 'multiple', selectableRowsOnClick: true };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const row = container.querySelector('[data-testid="MUIDataTableBodyRow-0"]');
     if (row) fireEvent.click(row);
@@ -493,9 +451,7 @@ describe('<MUIDataTable />', function() {
 
   it('should not update selectedRows when using rowsSelected option with type=none', () => {
     const options = { selectableRows: 'none', rowsSelected: [0] };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     // No checkboxes should be rendered
     const checkboxes = container.querySelectorAll('[data-description="row-select"]');
     expect(checkboxes.length).toBe(0);
@@ -503,27 +459,21 @@ describe('<MUIDataTable />', function() {
 
   it('should update selectedRows when using rowsSelected option with type=single', () => {
     const options = { selectableRows: 'single', rowsSelected: [0] };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const checkedCheckboxes = container.querySelectorAll('[data-description="row-select"] input:checked');
     expect(checkedCheckboxes.length).toBe(1);
   });
 
   it('should update selectedRows when using rowsSelected option with type=multiple', () => {
     const options = { selectableRows: 'multiple', rowsSelected: [0, 3] };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const checkedCheckboxes = container.querySelectorAll('[data-description="row-select"] input:checked');
     expect(checkedCheckboxes.length).toBe(2);
   });
 
   it('should update selectedRows (with default type=multiple option) when using rowsSelected with no option specified', () => {
     const options = { rowsSelected: [0, 3] };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const checkedCheckboxes = container.querySelectorAll('[data-description="row-select"] input:checked');
     expect(checkedCheckboxes.length).toBe(2);
   });
@@ -538,9 +488,7 @@ describe('<MUIDataTable />', function() {
         </tr>
       ),
     };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     // Verify that expanded content is rendered
     const expandedCells = screen.getAllByText('opened');
     expect(expandedCells.length).toBe(2);
@@ -559,9 +507,7 @@ describe('<MUIDataTable />', function() {
       onRowExpansionChange,
       tableId,
     };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const row = container.querySelector(`#MUIDataTableBodyRow-${tableId}-2`);
     fireEvent.click(row);
@@ -580,9 +526,7 @@ describe('<MUIDataTable />', function() {
       onRowSelectionChange,
       tableId,
     };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const row = container.querySelector(`#MUIDataTableBodyRow-${tableId}-2`);
     fireEvent.click(row);
@@ -624,9 +568,7 @@ describe('<MUIDataTable />', function() {
       responsive: 'standard',
     };
 
-    const { container } = render(
-      <MUIDataTable columns={arrayColumns} data={arrayData} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={arrayColumns} data={arrayData} options={options} />);
     // All 4 rows should render initially
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(4);
@@ -645,9 +587,7 @@ describe('<MUIDataTable />', function() {
     ];
     const options = { filter: true, filterType: 'dropdown', responsive: 'standard' };
 
-    const { container } = render(
-      <MUIDataTable columns={simpleColumns} data={simpleData} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={simpleColumns} data={simpleData} options={options} />);
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(4);
   });
@@ -687,11 +627,7 @@ describe('<MUIDataTable />', function() {
     ];
 
     const { container } = render(
-      <MUIDataTable
-        columns={nestedColumns}
-        data={nestedData}
-        options={{ enableNestedDataAccess: '/OK/' }}
-      />,
+      <MUIDataTable columns={nestedColumns} data={nestedData} options={{ enableNestedDataAccess: '/OK/' }} />,
     );
 
     expect(screen.getByText('Yonkers')).toBeInTheDocument();
@@ -711,9 +647,7 @@ describe('<MUIDataTable />', function() {
       { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={localData} options={{}} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={localData} options={{}} />);
 
     // Click 1: descending (since sortDescFirst=true)
     fireEvent.click(screen.getByTestId('headcol-0'));
@@ -733,9 +667,7 @@ describe('<MUIDataTable />', function() {
 
   it('should correctly build internal rowsPerPage when provided in options', () => {
     const options = { rowsPerPage: 2, textLabels: getTextLabels() };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(2);
   });
@@ -753,14 +685,20 @@ describe('<MUIDataTable />', function() {
         name: 'firstName',
         label: 'First Name',
         options: {
-          customBodyRender: () => { customBodyRenderCb(); return ''; },
+          customBodyRender: () => {
+            customBodyRenderCb();
+            return '';
+          },
         },
       },
       {
         name: 'lastName',
         label: 'Last Name',
         options: {
-          customBodyRenderLite: () => { customBodyRenderLiteCb(); return ''; },
+          customBodyRenderLite: () => {
+            customBodyRenderLiteCb();
+            return '';
+          },
         },
       },
       {
@@ -768,14 +706,15 @@ describe('<MUIDataTable />', function() {
         label: 'Phone',
         options: {
           filter: false,
-          customBodyRender: () => { customBodyRenderNoFilterCb(); return ''; },
+          customBodyRender: () => {
+            customBodyRenderNoFilterCb();
+            return '';
+          },
         },
       },
     ];
 
-    const { unmount } = render(
-      <MUIDataTable columns={localColumns} data={localData} options={options} />,
-    );
+    const { unmount } = render(<MUIDataTable columns={localColumns} data={localData} options={options} />);
     unmount();
 
     // lite only gets executed for the 5 entries shown
@@ -790,9 +729,7 @@ describe('<MUIDataTable />', function() {
 
   it('should select all rows when header checkbox is clicked', () => {
     const options = { selectableRows: 'multiple' };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const headerCheckbox = container.querySelector('[data-description="row-select-header"] input');
     if (headerCheckbox) {
@@ -804,9 +741,7 @@ describe('<MUIDataTable />', function() {
 
   it('should select only one row with selectableRows=single', () => {
     const options = { selectableRows: 'single' };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const rowCheckboxes = container.querySelectorAll('[data-description="row-select"] input');
     if (rowCheckboxes.length > 1) {
@@ -819,9 +754,7 @@ describe('<MUIDataTable />', function() {
 
   it('should remove selected data when delete button is clicked', () => {
     const options = { selectableRows: 'multiple' };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     // Select first row
     const rowCheckboxes = container.querySelectorAll('[data-description="row-select"] input');
@@ -840,9 +773,7 @@ describe('<MUIDataTable />', function() {
 
   it('should not remove selected data when onRowsDelete returns false', () => {
     const options = { selectableRows: 'multiple', onRowsDelete: () => false };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const rowCheckboxes = container.querySelectorAll('[data-description="row-select"] input');
     if (rowCheckboxes.length > 0) {
@@ -860,9 +791,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render search with searchText option and filter results', () => {
     const options = { searchOpen: true, searchText: 'Joe' };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     const searchInput = screen.getByRole('textbox', { name: 'Search' });
     expect(searchInput.value).toBe('Joe');
@@ -873,7 +802,7 @@ describe('<MUIDataTable />', function() {
   it('should call onFilterChange with correct column name', () => {
     let changedColumn;
     const options = {
-      onFilterChange: column => (changedColumn = column),
+      onFilterChange: (column) => (changedColumn = column),
       filterType: 'textField',
     };
     const localColumns = [
@@ -883,9 +812,7 @@ describe('<MUIDataTable />', function() {
       { name: 'State' },
     ];
 
-    const { container } = render(
-      <MUIDataTable columns={localColumns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={localColumns} data={data} options={options} />);
 
     fireEvent.click(screen.getByTestId('Filter Table-iconButton'));
 
@@ -898,35 +825,27 @@ describe('<MUIDataTable />', function() {
 
   it('should render correctly with custom title', () => {
     const title = <h1>Custom Table Title</h1>;
-    render(
-      <MUIDataTable title={title} columns={columns} data={data} />,
-    );
+    render(<MUIDataTable title={title} columns={columns} data={data} />);
     const headings = screen.getAllByRole('heading', { name: 'Custom Table Title' });
     expect(headings.length).toBeGreaterThanOrEqual(1);
   });
 
   it('should render with searchAlwaysOpen', () => {
     const options = { searchAlwaysOpen: true };
-    render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
   });
 
   it('should render correct number of rows per page', () => {
     const options = { rowsPerPage: 2 };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     const rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(2);
   });
 
   it('should navigate pages correctly', () => {
     const options = { rowsPerPage: 2 };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
 
     let rows = container.querySelectorAll('tbody tr');
     expect(rows.length).toBe(2);
@@ -942,9 +861,7 @@ describe('<MUIDataTable />', function() {
       rowsSelected: [0, 1, 2],
       searchText: 'J',
     };
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(screen.queryByText(/row\(s\) selected/)).toBeNull();
     expect(container.querySelector('[role="toolbar"]')).not.toBeNull();
   });
@@ -952,9 +869,7 @@ describe('<MUIDataTable />', function() {
   it('should allow empty array rowsPerPageOptions when provided in options', () => {
     const options = { rowsPerPageOptions: [] };
     // Should render without crashing
-    const { container } = render(
-      <MUIDataTable columns={columns} data={data} options={options} />,
-    );
+    const { container } = render(<MUIDataTable columns={columns} data={data} options={options} />);
     expect(container.querySelector('table')).not.toBeNull();
   });
 });

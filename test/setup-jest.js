@@ -5,8 +5,10 @@ if (typeof URL.createObjectURL === 'undefined') {
 }
 
 if (typeof global.Blob === 'undefined') {
-  global.Blob = function() { return ''; };
+  global.Blob = function () {
+    return '';
+  };
 }
 
 // Suppress console.error noise in tests
-console.error = function() {};
+console.error = function () {};

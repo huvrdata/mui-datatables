@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from './test-utils';
 import TableSelectCell from '../src/components/TableSelectCell';
 
-describe('<TableSelectCell />', function() {
+describe('<TableSelectCell />', function () {
   beforeAll(() => {});
 
   it('should render table select cell', () => {

@@ -3,7 +3,7 @@ import { renderWithDnd, screen, fireEvent } from './test-utils';
 import getTextLabels from '../src/textLabels';
 import TableHeadCell from '../src/components/TableHeadCell';
 
-describe('<TableHeadCell />', function() {
+describe('<TableHeadCell />', function () {
   let classes;
 
   beforeAll(() => {
@@ -49,7 +49,12 @@ describe('<TableHeadCell />', function() {
       <table>
         <thead>
           <tr>
-            <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
+            <TableHeadCell
+              options={options}
+              sortDirection={'asc'}
+              sort={true}
+              toggleSort={toggleSort}
+              classes={classes}>
               some content
             </TableHeadCell>
           </tr>
@@ -70,7 +75,12 @@ describe('<TableHeadCell />', function() {
       <table>
         <thead>
           <tr>
-            <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
+            <TableHeadCell
+              options={options}
+              sortDirection={'asc'}
+              sort={true}
+              toggleSort={toggleSort}
+              classes={classes}>
               some content
             </TableHeadCell>
           </tr>
@@ -89,7 +99,13 @@ describe('<TableHeadCell />', function() {
       <table>
         <thead>
           <tr>
-            <TableHeadCell options={options} hint={'hint text'} sort={false} toggleSort={() => {}} print={false} classes={classes}>
+            <TableHeadCell
+              options={options}
+              hint={'hint text'}
+              sort={false}
+              toggleSort={() => {}}
+              print={false}
+              classes={classes}>
               some content
             </TableHeadCell>
           </tr>

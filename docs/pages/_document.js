@@ -1,7 +1,8 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import JssProvider from 'react-jss/lib/JssProvider';
+import createEmotionServer from '@emotion/server/create-instance';
 import getPageContext from '../utils/getPageContext';
+import createEmotionCache from '../utils/createEmotionCache';
 
 class MyDocument extends Document {
   render() {
@@ -64,6 +65,8 @@ class MyDocument extends Document {
           `,
             }}
           />
+          {/* Inject MUI styles first to match with the prepend: true configuration. */}
+          {this.props.emotionStyleTags}
         </Head>
         <body>
           {this.props.customValue}
@@ -75,24 +78,33 @@ class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = ctx => {
-  const pageContext = getPageContext();
-  const page = ctx.renderPage(Component => props => (
-    <JssProvider registry={pageContext.sheetsRegistry} generateClassName={pageContext.generateClassName}>
-      <Component pageContext={pageContext} {...props} />
-    </JssProvider>
+MyDocument.getInitialProps = async ctx => {
+  const originalRenderPage = ctx.renderPage;
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks } = createEmotionServer(cache);
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: App =>
+        function EnhanceApp(props) {
+          return <App emotionCache={cache} {...props} />;
+        },
+    });
+
+  const initialProps = await Document.getInitialProps(ctx);
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
+  const emotionStyleTags = emotionStyles.styles.map(style => (
+    <style
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      key={style.key}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: style.css }}
+    />
   ));
 
   return {
-    ...page,
-    pageContext,
-    styles: (
-      <style
-        id="jss-server-side"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
-      />
-    ),
+    ...initialProps,
+    emotionStyleTags,
   };
 };
 

@@ -97,8 +97,9 @@ class Example extends React.Component {
           </TableRow>
         );
       },
-      onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) =>
-        console.log(curExpanded, allExpanded, rowsExpanded),
+      onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) => {
+        // no-op
+      },
     };
 
     const theme = createTheme({

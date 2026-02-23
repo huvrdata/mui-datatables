@@ -28,8 +28,7 @@ function Example() {
     tableBodyHeight,
     tableBodyMaxHeight,
     onTableChange: (action, state) => {
-      console.log(action);
-      console.dir(state);
+      // no-op
     },
   };
 

@@ -94,31 +94,31 @@ class Example extends React.Component {
         return false;
       },
       onRowSelectionChange: (currentRowsSelected, allRows, rowsSelected) => {
-        console.log(currentRowsSelected, allRows, rowsSelected);
+        // no-op
       },
       onRowsDelete: rowsDeleted => {
-        console.log(rowsDeleted, 'were deleted!');
+        // no-op
       },
       onChangePage: numberRows => {
-        console.log(numberRows);
+        // no-op
       },
       onSearchChange: searchText => {
-        console.log(searchText);
+        // no-op
       },
       onColumnSortChange: (column, direction) => {
-        console.log(column, direction);
+        // no-op
       },
       onViewColumnsChange: (column, action) => {
-        console.log(column, action);
+        // no-op
       },
       onFilterChange: (column, filters) => {
-        console.log(column, filters);
+        // no-op
       },
       onCellClick: (cellIndex, rowIndex) => {
-        console.log(cellIndex, rowIndex);
+        // no-op
       },
       onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
+        // no-op
       },
     };
 

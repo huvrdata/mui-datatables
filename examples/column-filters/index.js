@@ -89,7 +89,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       onFilterChange: (changedColumn, filterList) => {
-        console.log(changedColumn, filterList);
+        // no-op
       },
       selectableRows: 'multiple',
       filterType: 'dropdown',

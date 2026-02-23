@@ -85,10 +85,10 @@ class Example extends React.Component {
       searchText: this.state.searchText,
       searchProps: {
         onBlur: (e) => {
-          console.log('onBlur!');
+          // no-op
         },
         onKeyUp:(e) => {
-          console.log('onKeyUp!');
+          // no-op
         }
       },
       searchPlaceholder: 'Your Custom Search Placeholder',

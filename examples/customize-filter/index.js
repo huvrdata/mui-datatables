@@ -52,8 +52,6 @@ class Example extends React.Component {
           customFilterListOptions: {
             render: v => v.map(l => l.toUpperCase()),
             update: (filterList, filterPos, index) => {
-              console.log('update');
-              console.log(filterList, filterPos, index);
               filterList[index].splice(filterPos, 1);
               return filterList;
             }
@@ -119,8 +117,6 @@ class Example extends React.Component {
               return [];
             },
             update: (filterList, filterPos, index) => {
-              console.log('customFilterListOnDelete: ', filterList, filterPos, index);
-
               if (filterPos === 0) {
                 filterList[index].splice(filterPos, 1, '');
               } else if (filterPos === 1) {
@@ -242,7 +238,6 @@ class Example extends React.Component {
       filterType: 'multiselect',
       responsive: 'standard',
       setFilterChipProps: (colIndex, colName, data) => {
-        //console.log(colIndex, colName, data);
         return {
           color: 'primary',
           variant: 'outlined',

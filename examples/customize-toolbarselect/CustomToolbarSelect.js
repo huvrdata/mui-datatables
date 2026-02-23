@@ -35,7 +35,7 @@ class CustomToolbarSelect extends React.Component {
   };
 
   handleClickBlockSelected = () => {
-    console.log(`block users with dataIndexes: ${this.props.selectedRows.data.map(row => row.dataIndex)}`);
+    // no-op
   };
 
   render() {

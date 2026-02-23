@@ -55,6 +55,7 @@ lib/*
 # Docs
 docs/.next/*
 docs/export/*
+docs/out/*
 .firebase/
 
 # Optional REPL history

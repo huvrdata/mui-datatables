@@ -18,10 +18,7 @@ class Example extends React.Component {
             // Here you can render a more complex display.
             // You're given access to tableMeta, which has
             // the rowData (as well as the original object data).
-            // See the console for a detailed look at this object.
 
-            console.log('customBodyRender');
-            console.dir(tableMeta);
             return value;
           },
         },
@@ -155,8 +152,6 @@ class Example extends React.Component {
       rowsPerPageOptions: [],
       sortOrder: sortOrder,
       onTableChange: (action, tableState) => {
-        console.log(action, tableState);
-
         // a developer could react to change on an action basis or
         // examine the state as a whole and do whatever they want
 
@@ -168,13 +163,10 @@ class Example extends React.Component {
             this.sort(tableState.page, tableState.sortOrder);
             break;
           default:
-            console.log('action not handled.');
+            break;
         }
       },
     };
-
-    console.log('COLUMNS');
-    console.dir(JSON.parse(JSON.stringify(this.state.columns)));
 
     return (
       <div>

@@ -36,11 +36,10 @@ class Example extends React.Component {
     this.state = {
       data: data
     };
-    console.time('Render Time');
   }
 
   componentDidMount() {
-    console.timeEnd('Render Time');
+    // no-op
   }
 
   render() {

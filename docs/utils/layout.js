@@ -8,14 +8,13 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import GitHub from '../icons/GitHub';
-import withRoot from '../utils/withRoot';
-import { withStyles } from 'tss-react/mui';
+import { makeStyles } from 'tss-react/mui';
 import Menu from './Menu';
 
 /* eslint-disable import/no-webpack-loader-syntax  */
 import lightTheme from '!raw-loader!prismjs/themes/prism.css';
 
-const styles = theme => ({
+const useStyles = makeStyles()(theme => ({
   appBar: {
     backgroundColor: '#23232f',
   },
@@ -43,14 +42,13 @@ const styles = theme => ({
     flex: '1 0 100%',
     marginTop: '32px',
   },
-});
+}));
 
-class Layout extends React.Component {
-  state = {
-    drawerIsOpen: false,
-  };
+function Layout({ children }) {
+  const { classes } = useStyles();
+  const [drawerIsOpen, setDrawerIsOpen] = React.useState(false);
 
-  componentDidMount() {
+  React.useEffect(() => {
     const styleNode = document.createElement('style');
     styleNode.setAttribute('data-prism', 'true');
     if (document.head) {
@@ -58,46 +56,40 @@ class Layout extends React.Component {
     }
 
     styleNode.textContent = lightTheme;
-  }
+  }, []);
 
-  toggleDrawer = () => {
-    const drawerIsOpen = this.state.drawerIsOpen ? false : true;
-    this.setState({ drawerIsOpen });
+  const toggleDrawer = () => {
+    setDrawerIsOpen(!drawerIsOpen);
   };
 
-  render() {
-    const { classes, children } = this.props;
-    const { drawerIsOpen } = this.state;
-
-    return (
-      <div className={classes.wrapper}>
-        <Menu isOpen={drawerIsOpen} toggle={this.toggleDrawer} />
-        <AppBar classes={{ root: classes.appBar }}>
-          <Toolbar classes={{ root: classes.toolBar }}>
-            <IconButton onClick={this.toggleDrawer} color="inherit" aria-label="open drawer">
-              <MenuIcon />
+  return (
+    <div className={classes.wrapper}>
+      <Menu isOpen={drawerIsOpen} toggle={toggleDrawer} />
+      <AppBar classes={{ root: classes.appBar }}>
+        <Toolbar classes={{ root: classes.toolBar }}>
+          <IconButton onClick={toggleDrawer} color="inherit" aria-label="open drawer">
+            <MenuIcon />
+          </IconButton>
+          <a href="/">
+            <img className={classes.logo} src="/static/header.png" alt="Home" border="0" />
+          </a>
+          <Tooltip id="appbar-github" title="Material-UI Datatables repo" enterDelay={300}>
+            <IconButton
+              component="a"
+              color="inherit"
+              href="https://github.com/huvrdata/mui-datatables"
+              aria-labelledby="appbar-github">
+              <GitHub />
             </IconButton>
-            <a href="/">
-              <img className={classes.logo} src="/static/header.png" alt="Home" border="0" />
-            </a>
-            <Tooltip id="appbar-github" title="Material-UI Datatables repo" enterDelay={300}>
-              <IconButton
-                component="a"
-                color="inherit"
-                href="https://github.com/gregnb/mui-datatables"
-                aria-labelledby="appbar-github">
-                <GitHub />
-              </IconButton>
-            </Tooltip>
-          </Toolbar>
-        </AppBar>
-        <main id="main-content" className={classes.content}>
-          {children}
-        </main>
-        <footer className={classes.footer} />
-      </div>
-    );
-  }
+          </Tooltip>
+        </Toolbar>
+      </AppBar>
+      <main id="main-content" className={classes.content}>
+        {children}
+      </main>
+      <footer className={classes.footer} />
+    </div>
+  );
 }
 
-export default withRoot(withStyles(Layout, styles));
+export default Layout;

@@ -19,12 +19,10 @@ class Example extends React.Component {
    *  that triggers onTableChange
    */
   handleTableInit = (action, tableState) => {
-    console.log('handleTableInit: ', tableState);
     this.setState({ table: tableState });
   };
 
   handleTableChange = (action, tableState) => {
-    console.log('handleTableChange: ', tableState);
     this.setState({ table: tableState });
   };
 

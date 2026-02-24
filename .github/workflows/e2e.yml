@@ -1,0 +1,19 @@
+name: E2E smoke test
+
+on:
+  deployment_status:
+
+jobs:
+  smoke-test:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npx playwright install chromium --with-deps
+      - run: npx playwright test
+        env:
+          BASE_URL: ${{ github.event.deployment_status.target_url }}

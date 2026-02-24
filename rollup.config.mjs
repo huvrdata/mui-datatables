@@ -34,6 +34,7 @@ export default {
       file: 'dist/index.js',
       format: 'cjs',
       exports: 'named',
+      interop: 'compat',
       sourcemap: true,
     },
     {

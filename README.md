@@ -4,8 +4,8 @@
 
 # MUI-Datatables - Datatables for MUI
 
-[![NPM Downloads](https://img.shields.io/npm/dt/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/mui-datatables?minimal=true)
-[![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
+[![NPM Downloads](https://img.shields.io/npm/dt/@huvrdata/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/@huvrdata/mui-datatables?minimal=true)
+[![npm version](https://badge.fury.io/js/@huvrdata/mui-datatables.svg)](https://badge.fury.io/js/@huvrdata/mui-datatables)
 
 MUI-Datatables is a responsive datatables component built on [MUI](https://mui.com) (v5 and v6). It comes with features like filtering, resizable columns, view/hide columns, draggable columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
@@ -39,7 +39,7 @@ MUI-Datatables is a responsive datatables component built on [MUI](https://mui.c
 
 ## Install
 
-`npm install mui-datatables --save`
+`npm install @huvrdata/mui-datatables --save`
 
 You also need MUI v5 or v6 and its icon pack:
 

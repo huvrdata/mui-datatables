@@ -510,17 +510,29 @@ const options = {
 ```
 
 ## Contributing
-Thanks for taking an interest in the library and the github community!
+Thanks for taking an interest in the library and the GitHub community!
 
-The following commands should get you started:
+All changes should be submitted as pull requests against the `master` branch. The CI workflow will run linting, tests, and build checks automatically on each PR.
+
+### Local development
 
 ```sh
 npm i
 npm run dev
 ```
-open  http://localhost:5050/ in browser
 
-After you make your changes locally, you can run the test suite with `npm test`.
+Open http://localhost:5050/ in your browser. After making changes, run the test suite with `npm test`.
+
+### Releasing
+
+Releases are published to npm automatically when a GitHub Release is created. The version is derived from the release tag — no version field to maintain in `package.json`.
+
+While in beta:
+1. Create a GitHub Release with a tag like `v5.0.0-beta.0`, `v5.0.0-beta.1`, etc.
+2. Mark it as a **pre-release** — this publishes to the `beta` dist-tag on npm
+3. Users install the beta with `npm install @huvrdata/mui-datatables@beta`
+
+For a stable release, create a GitHub Release tagged `v5.0.0` (not marked as pre-release) and it will publish as `latest`.
 
 ## License
 The files included in this repository are licensed under the MIT license.

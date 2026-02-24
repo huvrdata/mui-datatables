@@ -4,8 +4,8 @@
 
 # MUI-Datatables - Datatables for MUI
 
-[![NPM Downloads](https://img.shields.io/npm/dt/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/mui-datatables?minimal=true)
-[![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
+[![NPM Downloads](https://img.shields.io/npm/dt/@huvrdata/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/@huvrdata/mui-datatables?minimal=true)
+[![npm version](https://badge.fury.io/js/@huvrdata/mui-datatables.svg)](https://badge.fury.io/js/@huvrdata/mui-datatables)
 
 MUI-Datatables is a responsive datatables component built on [MUI](https://mui.com) (v5 and v6). It comes with features like filtering, resizable columns, view/hide columns, draggable columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
@@ -39,7 +39,7 @@ MUI-Datatables is a responsive datatables component built on [MUI](https://mui.c
 
 ## Install
 
-`npm install mui-datatables --save`
+`npm install @huvrdata/mui-datatables --save`
 
 You also need MUI v5 or v6 and its icon pack:
 
@@ -510,17 +510,29 @@ const options = {
 ```
 
 ## Contributing
-Thanks for taking an interest in the library and the github community!
+Thanks for taking an interest in the library and the GitHub community!
 
-The following commands should get you started:
+All changes should be submitted as pull requests against the `master` branch. The CI workflow will run linting, tests, and build checks automatically on each PR.
+
+### Local development
 
 ```sh
 npm i
 npm run dev
 ```
-open  http://localhost:5050/ in browser
 
-After you make your changes locally, you can run the test suite with `npm test`.
+Open http://localhost:5050/ in your browser. After making changes, run the test suite with `npm test`.
+
+### Releasing
+
+Releases are published to npm automatically when a GitHub Release is created. The version is derived from the release tag — no version field to maintain in `package.json`.
+
+While in beta:
+1. Create a GitHub Release with a tag like `v5.0.0-beta.0`, `v5.0.0-beta.1`, etc.
+2. Mark it as a **pre-release** — this publishes to the `beta` dist-tag on npm
+3. Users install the beta with `npm install @huvrdata/mui-datatables@beta`
+
+For a stable release, create a GitHub Release tagged `v5.0.0` (not marked as pre-release) and it will publish as `latest`.
 
 ## License
 The files included in this repository are licensed under the MIT license.

@@ -4,13 +4,12 @@ test('examples page loads without JS errors', async ({ page }) => {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
 
-  const url = new URL('/examples', process.env.BASE_URL || 'http://localhost:3000').href;
-  console.log('Navigating to:', url);
+  // Load the root page first — static export has no server-side routing
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
 
-  const response = await page.goto('/examples');
-  console.log('Response status:', response?.status());
-  console.log('Final URL:', page.url());
-
+  // Navigate to examples via client-side routing
+  await page.getByText('Examples').first().click();
   await page.waitForLoadState('networkidle');
 
   // Click into an actual example to exercise the MUIDataTable component

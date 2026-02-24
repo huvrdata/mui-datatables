@@ -7,16 +7,13 @@ jobs:
   smoke-test:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm install --no-save @playwright/test
-      - run: npx playwright install chromium --with-deps
+      - run: npm install --no-save @playwright/test@1.58.2
       - run: npx playwright test
         env:
           BASE_URL: ${{ github.event.deployment_status.target_url }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-

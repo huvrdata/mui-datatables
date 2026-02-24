@@ -9,7 +9,7 @@ test('examples page loads without JS errors', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   // Open the hamburger menu drawer, then click Examples
-  await page.getByRole('button', { name: /menu/i }).click();
+  await page.getByRole('button', { name: /open drawer/i }).click();
   await page.getByText('Examples').first().click();
   await page.waitForLoadState('networkidle');
 

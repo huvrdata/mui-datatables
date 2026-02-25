@@ -1,6 +1,6 @@
 {
-  "name": "mui-datatables",
-  "version": "4.3.0",
+  "name": "@huvrdata/mui-datatables",
+  "version": "5.0.0-beta.2",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

@@ -136,7 +136,10 @@ function buildCSV(columns, data, options) {
 
 function downloadCSV(csv, filename) {
   const blob = new Blob([csv], { type: 'text/csv' });
-  const downloadURI = URL.createObjectURL(blob);
+  const dataURI = `data:text/csv;charset=utf-8,${csv}`;
+
+  const URL = window.URL || window.webkitURL;
+  const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
 
   let link = document.createElement('a');
   link.setAttribute('href', downloadURI);

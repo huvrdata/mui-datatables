@@ -3,12 +3,6 @@ import MuiTable from '@mui/material/Table';
 import MuiTooltip from '@mui/material/Tooltip';
 import { withStyles } from 'tss-react/mui';
 import clsx from 'clsx';
-import assignwith from 'lodash.assignwith';
-import cloneDeep from 'lodash.clonedeep';
-import find from 'lodash.find';
-import isEqual from 'lodash.isequal';
-import isUndefined from 'lodash.isundefined';
-import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DefaultTableBody from './components/TableBody';
@@ -20,7 +14,7 @@ import DefaultTableResize from './components/TableResize';
 import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
+import { buildMap, deepClone, deepMerge, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { load, save } from './localStorage';
@@ -77,7 +71,7 @@ const TOOLBAR_ITEMS = ['title', 'filter', 'search', 'print', 'download', 'viewCo
 const hasToolbarItem = (options, title) => {
   options.title = title;
 
-  return !isUndefined(find(TOOLBAR_ITEMS, (i) => options[i]));
+  return TOOLBAR_ITEMS.find((i) => options[i]) !== undefined;
 };
 
 // Select Toolbar Placement options
@@ -351,11 +345,16 @@ class MUIDataTable extends React.Component {
       props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
-    this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
-      // Merge any default options that are objects, as they will be overwritten otherwise
-      if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
-      return;
-    });
+    this.options = { ...options };
+    for (const key in props.options) {
+      if (Object.prototype.hasOwnProperty.call(props.options, key)) {
+        if (key === 'textLabels' || key === 'downloadOptions') {
+          this.options[key] = deepMerge(options[key], props.options[key]);
+        } else {
+          this.options[key] = props.options[key];
+        }
+      }
+    }
 
     this.handleOptionDeprecation(props);
   }
@@ -752,23 +751,23 @@ class MUIDataTable extends React.Component {
 
       if (column.filterOptions) {
         if (Array.isArray(column.filterOptions)) {
-          filterData[colIndex] = cloneDeep(column.filterOptions);
+          filterData[colIndex] = deepClone(column.filterOptions);
           this.warnDep(
             'filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
           );
         } else if (Array.isArray(column.filterOptions.names)) {
-          filterData[colIndex] = cloneDeep(column.filterOptions.names);
+          filterData[colIndex] = deepClone(column.filterOptions.names);
         }
       }
 
       if (column.filterList) {
-        filterList[colIndex] = cloneDeep(column.filterList);
+        filterList[colIndex] = deepClone(column.filterList);
       } else if (
         this.state.filterList &&
         this.state.filterList[colIndex] &&
         this.state.filterList[colIndex].length > 0
       ) {
-        filterList[colIndex] = cloneDeep(this.state.filterList[colIndex]);
+        filterList[colIndex] = deepClone(this.state.filterList[colIndex]);
       }
 
       if (this.options.sortFilterList) {
@@ -1036,8 +1035,8 @@ class MUIDataTable extends React.Component {
 
   updateDataCol = (row, index, value) => {
     this.setState((prevState) => {
-      let changedData = cloneDeep(prevState.data);
-      let filterData = cloneDeep(prevState.filterData);
+      let changedData = deepClone(prevState.data);
+      let filterData = deepClone(prevState.filterData);
 
       const tableMeta = this.getTableMeta(
         row,
@@ -1125,7 +1124,7 @@ class MUIDataTable extends React.Component {
   toggleViewColumn = (index) => {
     this.setState(
       (prevState) => {
-        const columns = cloneDeep(prevState.columns);
+        const columns = deepClone(prevState.columns);
         columns[index].display = columns[index].display === 'true' ? 'false' : 'true';
         return {
           columns: columns,
@@ -1185,7 +1184,7 @@ class MUIDataTable extends React.Component {
   toggleSortColumn = (index) => {
     this.setState(
       (prevState) => {
-        let columns = cloneDeep(prevState.columns);
+        let columns = deepClone(prevState.columns);
         let data = prevState.data;
         let newOrder = columns[index].sortDescFirst ? 'desc' : 'asc'; // default
 
@@ -1356,7 +1355,7 @@ class MUIDataTable extends React.Component {
   };
 
   updateFilterByType = (filterList, index, value, type, customUpdate) => {
-    const filterPos = filterList[index].findIndex((filter) => isEqual(filter, value));
+    const filterPos = filterList[index].findIndex((filter) => JSON.stringify(filter) === JSON.stringify(value));
 
     switch (type) {
       case 'checkbox':
@@ -1386,7 +1385,7 @@ class MUIDataTable extends React.Component {
   filterUpdate = (index, value, column, type, customUpdate, next) => {
     this.setState(
       (prevState) => {
-        const filterList = cloneDeep(prevState.filterList);
+        const filterList = deepClone(prevState.filterList);
         this.updateFilterByType(filterList, index, value, type, customUpdate);
 
         return {

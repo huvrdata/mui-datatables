@@ -1,3 +1,32 @@
+function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(deepClone);
+  const result = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      result[key] = deepClone(obj[key]);
+    }
+  }
+  return result;
+}
+
+function deepMerge(target, source) {
+  const result = { ...target };
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (
+        source[key] && typeof source[key] === 'object' && !Array.isArray(source[key]) &&
+        target[key] && typeof target[key] === 'object' && !Array.isArray(target[key])
+      ) {
+        result[key] = deepMerge(target[key], source[key]);
+      } else {
+        result[key] = source[key];
+      }
+    }
+  }
+  return result;
+}
+
 function buildMap(rows) {
   return rows.reduce((accum, { dataIndex }) => {
     accum[dataIndex] = true;
@@ -107,23 +136,14 @@ function buildCSV(columns, data, options) {
 
 function downloadCSV(csv, filename) {
   const blob = new Blob([csv], { type: 'text/csv' });
+  const downloadURI = URL.createObjectURL(blob);
 
-  /* taken from react-csv */
-  if (navigator && navigator.msSaveOrOpenBlob) {
-    navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
-
-    const URL = window.URL || window.webkitURL;
-    const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
-
-    let link = document.createElement('a');
-    link.setAttribute('href', downloadURI);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+  let link = document.createElement('a');
+  link.setAttribute('href', downloadURI);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function createCSVDownload(columns, data, options, downloadCSV) {
@@ -137,6 +157,8 @@ function createCSVDownload(columns, data, options, downloadCSV) {
 }
 
 export {
+  deepClone,
+  deepMerge,
   buildMap,
   getPageValue,
   getCollatorComparator,

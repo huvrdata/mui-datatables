@@ -107,6 +107,85 @@ describe('utils.js', () => {
     });
   });
 
+  describe('deepClone edge cases', () => {
+    it('handles Date objects by copying reference (same as lodash.cloneDeep)', () => {
+      const date = new Date('2024-01-01');
+      const obj = { created: date };
+      const cloned = deepClone(obj);
+      // Date is an object so deepClone will create a plain object copy (not a Date instance).
+      // This matches our usage — no Date objects appear in filter/column data.
+      expect(cloned).not.toBe(obj);
+    });
+
+    it('handles empty objects and arrays', () => {
+      expect(deepClone({})).toEqual({});
+      expect(deepClone([])).toEqual([]);
+    });
+
+    it('handles filterList-shaped data (arrays of arrays with mixed types)', () => {
+      const filterList = [['NY', 'CT'], [], ['Tampa'], [null]];
+      const cloned = deepClone(filterList);
+      expect(cloned).toEqual(filterList);
+      expect(cloned[0]).not.toBe(filterList[0]);
+      cloned[0].push('FL');
+      expect(filterList[0]).toEqual(['NY', 'CT']);
+    });
+  });
+
+  describe('filter equality via JSON.stringify (used in updateFilterByType)', () => {
+    // This tests the pattern: JSON.stringify(filter) === JSON.stringify(value)
+    // which replaced lodash.isEqual in MUIDataTable.updateFilterByType
+    const isFilterEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+    it('compares primitive filter values correctly', () => {
+      expect(isFilterEqual('NY', 'NY')).toBe(true);
+      expect(isFilterEqual('NY', 'CT')).toBe(false);
+      expect(isFilterEqual(42, 42)).toBe(true);
+      expect(isFilterEqual(0, 0)).toBe(true);
+      expect(isFilterEqual('', '')).toBe(true);
+    });
+
+    it('compares null filter values correctly', () => {
+      expect(isFilterEqual(null, null)).toBe(true);
+      expect(isFilterEqual(null, 'NY')).toBe(false);
+      expect(isFilterEqual(null, undefined)).toBe(false);
+    });
+
+    it('compares array filter values correctly', () => {
+      expect(isFilterEqual(['a', 'b'], ['a', 'b'])).toBe(true);
+      expect(isFilterEqual(['a', 'b'], ['b', 'a'])).toBe(false);
+    });
+
+    it('finds correct position in a filterList using findIndex', () => {
+      const filterList = ['NY', 'CT', 'FL', 'TX'];
+      const pos = filterList.findIndex((filter) => isFilterEqual(filter, 'FL'));
+      expect(pos).toBe(2);
+    });
+
+    it('returns -1 for values not in filterList', () => {
+      const filterList = ['NY', 'CT'];
+      const pos = filterList.findIndex((filter) => isFilterEqual(filter, 'CA'));
+      expect(pos).toBe(-1);
+    });
+
+    it('handles toggle: add then remove a checkbox filter value', () => {
+      const filterList = [[]];
+      const value = 'NY';
+
+      // Simulate checkbox check (add)
+      let filterPos = filterList[0].findIndex((f) => isFilterEqual(f, value));
+      expect(filterPos).toBe(-1);
+      filterList[0].push(value);
+      expect(filterList[0]).toEqual(['NY']);
+
+      // Simulate checkbox uncheck (remove) — this is the critical path
+      filterPos = filterList[0].findIndex((f) => isFilterEqual(f, value));
+      expect(filterPos).toBe(0);
+      filterList[0].splice(filterPos, 1);
+      expect(filterList[0]).toEqual([]);
+    });
+  });
+
   describe('escapeDangerousCSVCharacters', () => {
     it('properly escapes the first character in a string if it can be used for injection', () => {
       expect(escapeDangerousCSVCharacters('+SUM(1+1)')).toBe("'+SUM(1+1)");

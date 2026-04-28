@@ -618,7 +618,11 @@ class MUIDataTable extends React.Component {
     });
 
     if (Array.isArray(newColumnOrder)) {
-      columnOrder = newColumnOrder;
+      // Filter out any stale indices that exceed the current column count. This can happen when
+      // a persisted columnOrder (e.g. from localStorage) was saved with more columns than the
+      // current column definitions contain. Without this guard, columns[staleIndex] returns
+      // undefined and any downstream access (e.g. column.display) throws a TypeError.
+      columnOrder = newColumnOrder.filter(idx => Number.isInteger(idx) && idx >= 0 && idx < columnData.length);
     } else if (
       Array.isArray(prevColumnOrder) &&
       Array.isArray(newColumns) &&
